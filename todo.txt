@@ -6,10 +6,10 @@ Home:
     X a little description
 
 Login page:
-    - back to home page button
-    - a login menu
-    - fotgot password button
-    - login button
+    X a login menu
+    X fotgot password button
+    X login button
+    - login mechanism
 
 Admin panel:
     - user administration
