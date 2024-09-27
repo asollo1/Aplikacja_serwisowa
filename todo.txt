@@ -1,9 +1,9 @@
 Page project:
 Home:
-    - hello message
-    - loggin button
-    - logo
-    - a little description
+    X hello message
+    X loggin button 
+    X logo
+    X a little description
 
 Login page:
     - back to home page button
@@ -22,8 +22,12 @@ Service view:
     - change service request status
     - add service request
     - add raports to service requests
+    - print raport
     
 Teacher view:
     - add service request
     - view status of their past service
     - edit service request
+
+Whole:
+    - push notifications

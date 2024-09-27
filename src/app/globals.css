@@ -25,3 +25,23 @@ body {
     text-wrap: balance;
   }
 }
+
+
+.button {
+  transition: 1s;
+}
+.button:hover {
+  background-color: white;
+  color: black;
+}
+@keyframes button_animation {
+  0% {
+    background-color: black;
+    color: white;
+  }
+  100% {
+    background-color: white;
+    color: black;
+  }
+
+}
