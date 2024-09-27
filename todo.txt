@@ -1,0 +1,29 @@
+Page project:
+Home:
+    - hello message
+    - loggin button
+    - logo
+    - a little description
+
+Login page:
+    - back to home page button
+    - a login menu
+    - fotgot password button
+    - login button
+
+Admin panel:
+    - user administration
+    - service request menagment
+    - login and ip logs
+
+Service view:
+    - view service request
+    - add notes to service request
+    - change service request status
+    - add service request
+    - add raports to service requests
+    
+Teacher view:
+    - add service request
+    - view status of their past service
+    - edit service request
