@@ -10,6 +10,7 @@ Login page:
     X fotgot password button
     X login button
     - login mechanism
+    - improve layout
 
 Admin panel:
     - user administration
