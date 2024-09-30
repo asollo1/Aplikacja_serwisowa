@@ -6,8 +6,8 @@ import Back from '@/app/componets/form/back'
 export default function Login_menu(){
     return(
         <div className="w-screen h-screen flex items-center justify-center">
+            <Back href="/"></Back>
             <div className="bg-black border border-white p-10">
-                <Back href="/"></Back>
                 <Title label="Zaloguj się"></Title>
                 <p className="text-sm md:text-base text-red-500 max-w-fit mb-1 p-2 min-w-full text-center border border-red-500">Sprawdź, czy nazwa użytkownika<br></br> i hasło są poprawne</p>
                 <form className="text-base md:text-2xl">
