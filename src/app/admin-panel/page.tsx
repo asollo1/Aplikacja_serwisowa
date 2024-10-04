@@ -16,17 +16,18 @@ export default function Admin_panel(){
       setPanelMode(mode);
     };
     return (
-        <div className="flex flex-row h-screen w-screen">
-            <div className="h-full w-1/5 border-r-2 border-white p-10 flex flex-col items-center justify-center">
-                <Title label="Admin panel"></Title>
-                <div className="mt-10 text-center">
+        <div className="flex flex-col md:flex-row h-screen w-screen">
+            <div className="md:w-1/5"></div>
+            <div className="md:h-full w-full md:w-1/5 border-b-2 md:border-b-0 md:border-r-2 border-white p-4 md:p-10 fixed bg-black md:bg-transparent md:flex md:flex-col md:items-center md:justify-center">
+                <div className="text-center md:text-left"><Title label="Admin panel"></Title></div>
+                <div className="mt-2 mb:mt-10 text-center">
                     <Button content="Requests" onClick={() => handleButtonClick(panelModes.REQUESTS)} />
                     <Button content="Users" onClick={() => handleButtonClick(panelModes.USERS)} />
                     <Button content="Logs" onClick={() => handleButtonClick(panelModes.LOGS)} />
                     <Button content="Log off" />
                 </div>
             </div>
-            <div className="h-full w-4/5 p-10 flex flex-col">
+            <div className="h-full md:w-4/5 p-10 flex flex-col mt-24 md:mt-0">
                 <Panel options={panelMode}></Panel>
             </div>
         </div>
