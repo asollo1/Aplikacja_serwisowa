@@ -13,6 +13,7 @@ Login page:
     X improve layout
 
 Admin panel:
+    X admin panel layout
     - user administration
     - service request menagment
     - login and ip logs
