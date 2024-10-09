@@ -13,8 +13,10 @@ export default function Panel(props: {options: any}){
             )
         } else {
             return (
-                <div className="bg-red-500 text-black absolute m-auto p-10 border border-white">
-                    Error: No panel module of ID: {props.options}
+                <div className="w-full h-full flex items-center justify-center">
+                    <div className="bg-red-500 text-black absolute m-auto p-10 border border-white">
+                        Error: No panel module of ID: {props.options}
+                    </div>
                 </div>
             )
         }
