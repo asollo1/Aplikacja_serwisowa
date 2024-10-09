@@ -15,16 +15,19 @@ Login page:
 Admin panel:
     X admin panel layout
     - user administration
-    - service request menagment
+    X service request menagment
     - login and ip logs
 
 Service view:
-    - view service request
-    - add notes to service request
-    - change service request status
+    X view service request
+    X add notes to service request
+    X change service request status
     - add service request
     - add raports to service requests
-    - print raport
+    X print raport
+    - fix overflowing panels
+    - raport generation
+    - data pull from service
     
 Teacher view:
     - add service request
