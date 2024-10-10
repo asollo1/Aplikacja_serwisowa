@@ -22,7 +22,7 @@ Service view:
     X view service request
     X add notes to service request
     X change service request status
-    - add service request
+    X add service request
     - add raports to service requests
     X print raport
     - fix overflowing panels
@@ -30,9 +30,8 @@ Service view:
     - data pull from service
     
 Teacher view:
-    - add service request
-    - view status of their past service
-    - edit service request
+    X add service request
+    X view status of their past service
 
 Whole:
     - push notifications

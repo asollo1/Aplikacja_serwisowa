@@ -12,7 +12,7 @@ export default function Panel(props: {options: any}){
         } else if (props.options == 3) {
             return (
                 <div className="w-full h-full flex justify-center items-center">
-                    <p className="text-center text-2xl text-white">Witaj w panelu serwisanta</p>
+                    <p className="text-center text-2xl text-white">Witaj w panelu nauczyciela</p>
                 </div>
             )
         } else {
