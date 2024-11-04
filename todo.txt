@@ -32,6 +32,7 @@ Service view:
 Teacher view:
     X add service request
     X view status of their past service
-
+    - data pull from service
+    
 Whole:
     - push notifications
