@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
             case 'POST':
                 pool.connect();
                 var x = pool.query('SELECT * FROM users WHERE username = "'+sub_username+'" AND password = "'+sub_password+'";', function (err, results) {
-                    if (results.length > 0){
+                    if (results != undefined) {
                         id = results[0].id; 
                         username = results[0].username; 
                         password = results[0].password; 

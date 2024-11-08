@@ -9,14 +9,14 @@ Login page:
     X a login menu
     X fotgot password button
     X login button
-    - login mechanism
+    X login mechanism
     X improve layout
 
 Admin panel:
     X admin panel layout
     - user administration
     X service request menagment
-    - login and ip logs
+    X service request display from server
 
 Service view:
     X view service request
@@ -32,7 +32,9 @@ Service view:
 Teacher view:
     X add service request
     X view status of their past service
-    - data pull from service
+    X data pull from service
     
 Whole:
     - push notifications
+    X logout button
+    - add service request form functionality

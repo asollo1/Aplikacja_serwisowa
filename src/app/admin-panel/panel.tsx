@@ -1,6 +1,5 @@
 import Requests from "./requests"
 import Users from "./users"
-import Logs from "./logs"
 export default function Panel(props: {options: any}){
         if (props.options == 1){
             return (
@@ -11,10 +10,6 @@ export default function Panel(props: {options: any}){
                 <Users />
             )
 
-        } else if (props.options == 3) {
-            return (
-                <Logs />
-            )
         } else if (props.options == 4) {
             return (
                 <div className="w-full h-full flex justify-center items-center">

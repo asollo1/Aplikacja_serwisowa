@@ -23,13 +23,15 @@ async function login(event: FormEvent<HTMLFormElement>){
             document.cookie = `password=${response.password}`;
             document.cookie = `id=${response.id}`;
             document.cookie = `user_type=${response.user_type}`;
-            if (response.user_type = 1){
-                window.location.href = '/teacher';
-            } else if(response.user_type = 2){
-                window.location.href ='/service';
-            } else if(response.user_type = 3){
-                window.location.href = '/admin-panel';
+            var location: string = "/login/error";
+            if (response.user_type == 1){
+                location = '/teacher';
+            } else if(response.user_type == 2){
+                location ='/service';
+            } else if(response.user_type == 3){
+                location = '/admin-panel';
             }
+            window.location.href = location;
         } else if(response.status == 2){
             window.location.href = '/login/error';
         };

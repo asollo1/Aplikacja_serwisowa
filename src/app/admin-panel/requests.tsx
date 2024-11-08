@@ -1,9 +1,13 @@
+import { getCookie } from "cookies-next";
+import { useState } from "react";
+import { useEffect } from "react";
+import next from "next";
 function Request_item(props: {description: any,id: any,state: any, date: any, user: any}){
-    if(props.state == 0){
+    if(props.state == 1){
         var status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
-    } else if(props.state == 1){
-        var status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
     } else if(props.state == 2){
+        var status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
+    } else if(props.state == 3){
         var status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
     } else {
         var status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
@@ -36,14 +40,31 @@ function Request_item(props: {description: any,id: any,state: any, date: any, us
     )
 }
 export default function Requests(){
+    const [data, setData] = useState(null)
+    const [isLoading, setLoading] = useState(true)
+   
+    useEffect(() => {
+        var username = getCookie("username");
+        var password = getCookie("password");
+        fetch('/api/admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password: password }),
+        }).then(response => {
+            return response.json();
+        }).then(response => {
+            setData(response.response);
+            setLoading(false)
+        })
+    }, [])
+   
+    if (isLoading) return <p>Loading...</p>
+    if (!data) return <p>No data fetched</p>
+    console.log(data)
     return (
         <div>
             <p className="text-3xl font-bold text-center md:text-left">Requests</p>
-            <Request_item description="Opis zgłoszenia 1" id="1" state="0" user="Mariola Szczęch" date="04.10.2024"/>
-            <Request_item description="Opis zgłoszenia 2" id="2" state="1" user="Mariola Szczęch" date="04.10.2024"/>
-            <Request_item description="Opis zgłoszenia 2" id="2" state="1" user="Mariola Szczęch" date="04.10.2024"/>
-            <Request_item description="Opis zgłoszenia 3" id="3" state="2" user="Mariola Szczęch" date="04.10.2024"/>
-            <Request_item description="Opis zgłoszenia 4" id="4" state="3" user="Mariola Szczęch" date="04.10.2024"/>
+            <div dangerouslySetInnerHTML={{ __html: data}}></div>
         </div>
     )
 }
