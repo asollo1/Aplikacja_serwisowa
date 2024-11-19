@@ -37,4 +37,4 @@ Teacher view:
 Whole:
     - push notifications
     X logout button
-    - add service request form functionality
+    X add service request form functionality

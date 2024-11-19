@@ -1,14 +1,10 @@
+import dbconn from '@/app/componets/scripts/dbconn';
 import mysql from 'mysql'
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 let id:any, username:any, password:any, user_type:any, status:any;
 export async function POST(req: NextRequest, res: NextApiResponse) {
-    const pool = mysql.createConnection({
-        host: 'localhost',
-        user: 'serwis_app',
-        password: 'test',
-        database: "serwis_zse"  
-    });
+    const pool = dbconn()
     var body = await req.json();
     var sub_username = body.username
     var sub_password = body.password
@@ -17,7 +13,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
             case 'POST':
                 pool.connect();
                 var x = pool.query('SELECT * FROM users WHERE username = "'+sub_username+'" AND password = "'+sub_password+'";', function (err, results) {
-                    if (results != undefined) {
+                    if (results[0].id != undefined) {
                         id = results[0].id; 
                         username = results[0].username; 
                         password = results[0].password; 

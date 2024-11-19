@@ -1,10 +1,10 @@
 "use client"
 import Title from "../componets/form/title"
-import Button from "../componets/button"
+import Button from "../componets/ui_elements/button"
 import Panel from "./panel"
 import React, { useState } from 'react';
-import Validator from "../componets/validator";
-import Logoff from "../componets/logoff"
+import Validator from "../componets/scripts/validator";
+import Logoff from "../componets/scripts/logoff"
 const panelModes = {
     REQUESTS: 1,
     USERS: 2,

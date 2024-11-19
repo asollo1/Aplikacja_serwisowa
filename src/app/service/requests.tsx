@@ -1,6 +1,8 @@
-import Button from "../componets/button";
+import Button from "../componets/ui_elements/button";
 import "../globals.css"
-import React, { useState } from "react";
+import { JSXElementConstructor, useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+
 function Request_item(props: { description: any, id: any, state: any, date: any, user: any, onClick: any }) {
     if (props.state == 0) {
         var status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
@@ -46,18 +48,35 @@ export default function Requests() {
     const handleModeChange = (mode: any) => {
         setMode(mode);
     };
+    const [data_rec, setData] = useState(null)
+    const [isLoading, setLoading] = useState(true)
+    useEffect(() => {
+        var username = getCookie("username");
+        var password = getCookie("password");
+        var response = fetch('/api/service', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password: password}),
+        }).then(response => {
+            return response.json();
+        }).then(response => {
+            return response.response
+        }).then(response => {
+            var res 
+            for(var i in response){
+                res += (<Request_item description={response[i].description} id={response[i].id} state={response[i].state} user={response[i].username} date={response[i].date_of_request} onClick={() => { handleIdChange(response[i].id); handleModeChange(2) }}/>)
+            }
+            return res
+        })
+        setData(response);
+        setLoading(false)
+    }, [])
+    if (isLoading) return <p>Loading...</p>
+    if (!data_rec) return <p>No data fetched</p>
     if (mode == 1) {
-        return (
-            <div>
-                <Request_item description="Opis zgłoszenia 1" id="1" state="0" user="Mariola Szczęch" date="04.10.2024" onClick={() => { handleIdChange(1); handleModeChange(2) }} />
-                <Request_item description="Opis zgłoszenia 2" id="2" state="1" user="Mariola Szczęch" date="04.10.2024" onClick={() => { handleIdChange(2); handleModeChange(2) }} />
-                <Request_item description="Opis zgłoszenia 2" id="2" state="1" user="Mariola Szczęch" date="04.10.2024" onClick={() => { handleIdChange(3); handleModeChange(2) }} />
-                <Request_item description="Opis zgłoszenia 3" id="3" state="2" user="Mariola Szczęch" date="04.10.2024" onClick={() => { handleIdChange(4); handleModeChange(2) }} />
-                <Request_item description="Opis zgłoszenia 4" id="4" state="3" user="Mariola Szczęch" date="04.10.2024" onClick={() => { handleIdChange(5); handleModeChange(2) }} />
-            </div>
-        )
+        return data_rec
     } else if (mode == 2) {
-        var sala = 1;
+        var sala = 6;
         var status = "Zgłoszone";
         var data = "04.10.2024";
         return (

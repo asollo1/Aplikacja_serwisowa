@@ -23,7 +23,7 @@ export default function Requests(){
    
     if (isLoading) return <p>Loading...</p>
     if (!data) return <p>No data fetched</p>
-    console.log(data)
+
     return (
         <div>
             <p className="text-3xl font-bold text-center md:text-left">Requests</p>

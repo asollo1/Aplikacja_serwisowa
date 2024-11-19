@@ -1,3 +1,4 @@
+import dbconn from '@/app/componets/scripts/dbconn';
 import mysql from 'mysql'
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
@@ -46,12 +47,7 @@ function Request_item(description: any,id: any,state: any, date: any, user: any,
 }
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
-    const pool = mysql.createConnection({
-        host: 'localhost',
-        user: 'serwis_app',
-        password: 'test',
-        database: "serwis_zse"  
-    });
+    const pool = dbconn()
     var body = await req.json();
     var sub_username = body.username
     var sub_password = body.password

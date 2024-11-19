@@ -1,5 +1,5 @@
 import Requests from "./requests"
-import Report_form from "../componets/report_form"
+import Report_form from "../componets/ui_elements/report_form"
 export default function Panel(props: {options: any}){
         if (props.options == 1){
             return (

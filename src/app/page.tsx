@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from "./componets/button"
-import Nav_item from "./componets/navbar"
+import Button from "./componets/ui_elements/button"
+import Nav_item from "./componets/ui_elements/navbar"
 import logo from "./logo.svg"
 import Link from 'next/link'
 export default function Home() {
