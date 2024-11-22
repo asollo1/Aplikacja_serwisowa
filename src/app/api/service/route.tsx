@@ -6,13 +6,13 @@ let response: string = "", status:number = 1;
 import Button from '@/app/componets/ui_elements/button';
 function Request_item(props: { description: any, id: any, state: any, date: any, user: any, onClick: any }) {
     if (props.state == 0) {
-        var status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
+        let status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
     } else if (props.state == 1) {
-        var status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
+        let status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
     } else if (props.state == 2) {
-        var status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
+        let status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
     } else {
-        var status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
+        let status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
     }
     return (
         <div className="border border-white p-5 m-5">
@@ -43,9 +43,9 @@ function Request_item(props: { description: any, id: any, state: any, date: any,
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
-    var body = await req.json();
-    var sub_username = body.username
-    var sub_password = body.password
+    let body = await req.json();
+    let sub_username = body.username
+    let sub_password = body.password
     try {
         switch (req.method) {
             case 'POST':
@@ -58,8 +58,8 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                     }
                 });
                 if (status == 1){
-                    pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;', function (err, results){
-                        var i = 0;
+                    pool.query('SELECT ROW_NUMBER() OVER (ORDER BY requests.status) AS row_num, requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;', function (err, results){
+                        let i = 0;
                         response = results
                     });
                 }

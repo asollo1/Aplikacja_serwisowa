@@ -9,23 +9,23 @@ import { getCookie } from "cookies-next"
 import { useRef } from "react"
 
 export default function Report_form(props: { back?: boolean; }) {
-    var back = <div></div>
-    var confirm_box = useRef(null);
-    var field = useRef(null);
-    var room_number = useRef(null);
+    let back = <div></div>
+    let confirm_box = useRef(null);
+    let field = useRef(null);
+    let room_number = useRef(null);
     async function send(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
-        var username = getCookie("username");
-        var password = getCookie("password");
-        var user_id = getCookie("id");
-        var description = formData.get("description")
+        let username = getCookie("username");
+        let password = getCookie("password");
+        let user_id = getCookie("id");
+        let description = formData.get("description")
+        let room_number = formData.get("room_number");
         const response = await fetch('/api/add_request', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: username, password: password, description: description, room_number: room_number, user_id: user_id }),
         }).then(response => {
-            console.log(response.json);
             return response.json();
         }).then(response => {
             if (response.status == 1) {
@@ -52,7 +52,7 @@ export default function Report_form(props: { back?: boolean; }) {
     };
     if (mode == 1) {
         if (props.back) {
-            var back = <Back href="/dashboard"></Back>
+            let back = <Back href="/dashboard"></Back>
         }
         return (
             <div className="w-full h-full flex justify-center items-center">

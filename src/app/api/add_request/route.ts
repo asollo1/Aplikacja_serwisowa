@@ -4,11 +4,11 @@ import dbconn from '@/app/componets/scripts/dbconn';
 let status:any, user_id:any;
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
-    var body = await req.json();
-    var sub_username = body.username
-    var sub_password = body.password
-    var sub_description = body.description
-    var sub_room_number = body.room_number
+    let body = await req.json();
+    let sub_username = body.username
+    let sub_password = body.password
+    let sub_description = body.description
+    let sub_room_number = body.room_number
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed

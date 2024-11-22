@@ -5,13 +5,13 @@ import dbconn from '@/app/componets/scripts/dbconn'
 let response: string = "", status:number = 1;
 function Request_item(description: any,id: any,state: any, date: any, user: any, class_number: any){
     if(state == 1){
-        var status = "<div class='rounded-full bg-red-600 p-3'>Zgłoszone</div>";
+        let status = "<div class='rounded-full bg-red-600 p-3'>Zgłoszone</div>";
     } else if(state == 2){
-        var status = "<div class='rounded-full bg-yellow-600 p-3'>W realizacji</div>";
+        let status = "<div class='rounded-full bg-yellow-600 p-3'>W realizacji</div>";
     } else if(state == 3){
-        var status = "<div class='rounded-full bg-green-600 p-3 '>Zrealizowane</div>";
+        let status = "<div class='rounded-full bg-green-600 p-3 '>Zrealizowane</div>";
     } else {
-        var status = "<div class='rounded-full bg-blue-800 p-3'>ERROR: Status of nr "+state+" has no coresponding value</div>";
+        let status = "<div class='rounded-full bg-blue-800 p-3'>ERROR: Status of nr "+state+" has no coresponding value</div>";
     }
     return (
         '<div class="border border-white p-5 m-5">\
@@ -47,9 +47,9 @@ function Request_item(description: any,id: any,state: any, date: any, user: any,
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
-    var body = await req.json();
-    var sub_username = body.username
-    var sub_password = body.password
+    let body = await req.json();
+    let sub_username = body.username
+    let sub_password = body.password
     try {
         switch (req.method) {
             case 'POST':
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                 });
                 if (status == 1){
                     pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;', function (err, results){
-                        var i = 0;
+                        let i = 0;
                         response = ""
                         while(results[i] != undefined){
                             response += Request_item(results[i].description, results[i].id, results[i].status, results[i].date_of_request, results[i].username, results[i].class)

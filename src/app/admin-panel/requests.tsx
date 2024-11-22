@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import next from "next";
 function Request_item(props: {description: any,id: any,state: any, date: any, user: any}){
     if(props.state == 1){
-        var status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
+        let status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
     } else if(props.state == 2){
-        var status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
+        let status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
     } else if(props.state == 3){
-        var status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
+        let status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
     } else {
-        var status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
+        let status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
     }
     return (
         <div className="border border-white p-5 m-5">
@@ -44,8 +44,8 @@ export default function Requests(){
     const [isLoading, setLoading] = useState(true)
    
     useEffect(() => {
-        var username = getCookie("username");
-        var password = getCookie("password");
+        let username = getCookie("username");
+        let password = getCookie("password");
         fetch('/api/admin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

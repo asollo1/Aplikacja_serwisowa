@@ -7,8 +7,8 @@ import { FormEvent } from 'react'
 async function login(event: FormEvent<HTMLFormElement>){
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    var username = formData.get("username");
-    var password = formData.get("password");
+    let username = formData.get("username");
+    let password = formData.get("password");
     const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -23,7 +23,7 @@ async function login(event: FormEvent<HTMLFormElement>){
             document.cookie = `password=${response.password}`;
             document.cookie = `id=${response.id}`;
             document.cookie = `user_type=${response.user_type}`;
-            var location: string = "/login/error";
+            let location: string = "/login/error";
             if (response.user_type == 1){
                 location = '/teacher';
             } else if(response.user_type == 2){

@@ -6,9 +6,9 @@ export default function Requests(){
     const [isLoading, setLoading] = useState(true)
    
     useEffect(() => {
-        var username = getCookie("username");
-        var password = getCookie("password");
-        var id = getCookie("id")
+        let username = getCookie("username");
+        let password = getCookie("password");
+        let id = getCookie("id")
         fetch('/api/teacher', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

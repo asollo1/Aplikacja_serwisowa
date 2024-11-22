@@ -7,8 +7,8 @@ import { FormEvent } from 'react'
 async function login(event: FormEvent<HTMLFormElement>){
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    var username = formData.get("username");
-    var password = formData.get("password");
+    let username = formData.get("username");
+    let password = formData.get("password");
     const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
