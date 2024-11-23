@@ -1,20 +1,22 @@
-import Button from "../componets/ui_elements/button";
+import Button from "@/app/componets/ui_elements/button";
 import "@/app/globals.css"
-import { JSXElementConstructor, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCookie } from "cookies-next";
 
 function asciiArrayToString(asciiArray: number[]): string {
     return asciiArray.map(num => String.fromCharCode(num)).join('');
 }
+
 function Request_item(props: { description: any, id: any, state: any, date: any, user: any, onClick: any }) {
+    let status
     if (props.state == 1) {
-        let status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
+        status = <div className='rounded-full bg-red-600 p-3'>Zgłoszone</div>;
     } else if (props.state == 2) {
-        let status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
+        status = <div className='rounded-full bg-yellow-600 p-3'>W realizacji</div>;
     } else if (props.state == 3) {
-        let status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
+        status = <div className='rounded-full bg-green-600 p-3 '>Zrealizowane</div>;
     } else {
-        let status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
+        status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
     }
     return (
         <div className="border border-white p-5 m-5">
@@ -52,23 +54,30 @@ export default function Requests() {
     const handleIdChange = (id: any) => {
         setId(id);
     };
+
     const [mode, setMode] = useState(1)
     const handleModeChange = (mode: any) => {
         setMode(mode);
     };
+
     const [data, setData] = useState(null)
+
     const [isLoading, setLoading] = useState(true)
-    function change(id: number){
+
+    function change(id: number) {
         handleIdChange(id);
         handleModeChange(2);
     }
+
+    const status_reference = useRef(null);
+
     useEffect(() => {
         let username = getCookie("username");
         let password = getCookie("password");
         let response = fetch('/api/service', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password: password}),
+            body: JSON.stringify({ username, password: password }),
         }).then(response => {
             return response.json();
         }).then(response => {
@@ -77,21 +86,41 @@ export default function Requests() {
             setData(response);
             setLoading(false)
         })
-        
+
     }, [])
+
     if (isLoading) return <p>Loading...</p>
     if (!data) return <p>No data fetched</p>
     if (mode == 1) {
-        return(
+        return (
             <div>
                 {data.map(item =>
-                    <Request_item key={item.id} description={item.description} id={item.id} state={item.status} date={item.date_of_request.substring(0,10)} user={item.username} onClick={() => change(item.row_num-1)}></Request_item>
+                    <Request_item key={item.id} description={item.description} id={item.id} state={item.status} date={item.date_of_request.substring(0, 10)} user={item.username} onClick={() => change(item.row_num - 1)}></Request_item>
                 )}
             </div>
         )
     } else if (mode == 2) {
+        async function changeState(req_status: number) {
+            let username = getCookie("username");
+            let password = getCookie("password");
+            const response = await fetch('/api/change_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: username, password: password, set_status: req_status, request_id: data[id].id}),
+            }).then(response => {
+                return response.json();
+            })
+            if (response != null) {
+                if (response.status == 1) {
+                    let data_temp = data
+                    data_temp[id].status = req_status
+                    setData(data_temp)
+                    setMode(1)
+                }
+            }
+        }
+
         let status
-        console.log(data[id].status)
         switch (data[id].status) {
             case 1:
                 status = <p>Przyjęte</p>
@@ -100,46 +129,46 @@ export default function Requests() {
                 status = <p>W realizacji</p>
                 break;
             case 3:
-                status = <p>Zrealizowane.</p>
+                status = <p>Zrealizowane</p>
                 break;
             default:
-                status = <p>Nieznany status.</p>
+                status = <p>Nieznany status</p>
                 break;
         }
         return (
-           <div className="h-full w-full flex items-center justify-center">
-               <div>
-                   <div className="flex w-full md:flex-row justify-between text-center md:text-left items-center border border-white p-3">
-                       <p className="mx-3">Szczegóły zgłoszenia</p>
-                       <p className="mx-3">ID: {data[id].id}</p>
-                       <p className="mx-3">Sala: {data[id].class}</p>
-                       <p className="mx-3">Status: {status}</p>
-                       <p className="mx-3">Data zgłoszenia: {data[id].date_of_request.substring(0,10)}</p>
-                       <Button content={"Powrót"} onClick={() => handleModeChange(1)} />
-                   </div>
-                   <div className="border border-white p-3">
-                       <p className="text-xl">Opis zgłoszenia:</p>
-                       {asciiArrayToString(data[id].description.data)}
-                   </div>
-                   <div className="border border-white p-3">
-                       <p className="text-xl">Notaka serwisu:</p>
-                       <textarea rows={6}  className="w-full bg-black mb-3 border border-white p-3">
-                       </textarea>
-                       <Button content={"Zapisz"}/>
-                   </div>
-                   <div className="flex w-full md:flex-row justify-evenly text-center md:text-left items-center border border-white p-3">
-                       <div className="flex md:flex-row border border-white items-center justify-between p-2">
-                           <p>Ustaw status:</p>
-                           <div className="md:ml-5">
-                               <Button content={"Przyjęte"}/>
-                               <Button content={"W realizacji"}/>
-                               <Button content={"Zrealizowane"}/>
-                           </div>
-                       </div>
-                       <Button content={"Generuj raport"}/>
-                   </div>
-               </div>
-           </div>
+            <div className="h-full w-full flex items-center justify-center">
+                <div>
+                    <div className="flex w-full md:flex-row justify-between text-center md:text-left items-center border border-white p-3">
+                        <div className="mx-3">Szczegóły zgłoszenia</div>
+                        <div className="mx-3">ID: {data[id].id}</div>
+                        <div className="mx-3">Sala: {data[id].class}</div>
+                        <div className="mx-3">Status: {status}</div>
+                        <div className="mx-3">Data zgłoszenia: {data[id].date_of_request.substring(0, 10)}</div>
+                        <Button content={"Powrót"} onClick={() => handleModeChange(1)} />
+                    </div>
+                    <div className="border border-white p-3">
+                        <p className="text-xl">Opis zgłoszenia:</p>
+                        {asciiArrayToString(data[id].description.data)}
+                    </div>
+                    <div className="border border-white p-3">
+                        <p className="text-xl">Notaka serwisu:</p>
+                        <textarea rows={6} className="w-full bg-black mb-3 border border-white p-3">
+                        </textarea>
+                        <Button content={"Zapisz"} />
+                    </div>
+                    <div className="flex w-full md:flex-row justify-evenly text-center md:text-left items-center border border-white p-3">
+                        <div className="flex md:flex-row border border-white items-center justify-between p-2">
+                            <p>Ustaw status:</p>
+                            <div className="md:ml-5">
+                                <Button onClick={() => changeState(1)} content={"Przyjęte"} />
+                                <Button onClick={() => changeState(2)} content={"W realizacji"} />
+                                <Button onClick={() => changeState(3)} content={"Zrealizowane"} />
+                            </div>
+                        </div>
+                        <Button content={"Generuj raport"} />
+                    </div>
+                </div>
+            </div>
         )
     }
 }

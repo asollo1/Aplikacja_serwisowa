@@ -14,7 +14,6 @@ async function login(event: FormEvent<HTMLFormElement>){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password: password }),
     }).then(response => {
-        console.log(response.json);
         return response.json();
     })
     if (response != null) {
