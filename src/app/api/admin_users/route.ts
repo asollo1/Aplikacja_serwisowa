@@ -1,20 +1,28 @@
-import { NextApiResponse} from 'next'
+import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 import login from '@/app/componets/scripts/login';
+import dbconn from '@/app/componets/scripts/dbconn'
+let response: string = "", status:number = 1;
+
 export async function POST(req: NextRequest, res: NextApiResponse) {
+    const pool = dbconn();
     let body = await req.json();
     let sub_username = body.username
     let sub_password = body.password
     try {
         switch (req.method) {
             case 'POST':
-                let result = await login(sub_username, sub_password);
+                let result = await login(sub_username, sub_password, 3);
+                if (result.status == 1){
+                    pool.connect();
+                    pool.query('SELECT id, email, username FROM users;', function (err, results){
+                        response = results
+                    });
+                    pool.end();
+                }
                 return NextResponse.json({
-                    "id": result.id,
-                    "username": result.username,
-                    "password": result.password,
-                    "user_type": result.user_type,
-                    "status": result.status}, {status: 200});
+                    response,
+                    }, {status: 200});
                 break;
             default:
                 return NextResponse.json({ message: 'Method not allowed' }, {status: 405});

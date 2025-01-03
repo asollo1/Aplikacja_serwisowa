@@ -34,7 +34,9 @@ export default function Admin_panel(){
             </div>
         )
     } else {
-        window.location.href ='/login';
+        if (typeof window !== "undefined") {
+            window.location.href ='/login';
+        }
         return null;  // Return null if user is not logged in.
     }
 }

@@ -5,12 +5,14 @@ import Panel from "./panel"
 import React, { useState } from 'react';
 import Validator from '../componets/scripts/validator'
 import Logoff from "../componets/scripts/logoff";
+import { useRouter } from 'next/navigation'
 const panelModes = {
     REQUESTS: 1,
     REPORT: 2,
     DEFAULT: 3
 };
 export default function Admin_panel(){
+    const router = useRouter()
     const [panelMode, setPanelMode] = useState(panelModes.DEFAULT);
     const handleButtonClick = (mode: any) => {
       setPanelMode(mode);
@@ -34,7 +36,7 @@ export default function Admin_panel(){
             </div>
         )
     } else {
-        window.location.href ='/login';
+        router.push('/login');
         return null;  // Return null if user is not logged in.
     }
 }

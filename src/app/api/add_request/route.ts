@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 import dbconn from '@/app/componets/scripts/dbconn';
-let status:any, user_id:any;
+import login from '@/app/componets/scripts/login';
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
     let body = await req.json();
@@ -19,25 +19,17 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
         switch (req.method) {
             case 'POST':
                 pool.connect();
-                pool.query('SELECT * FROM users WHERE username = "'+sub_username+'" AND password = "'+sub_password+'";', function (err, results) {
-                    if (results[0].id != undefined) {
-                        user_id = results[0].id;
-                        status = 1
-                    } else {
-                        status = 2
-                    }
-                });
-                if (status == 1 && user_id != null) {
-                    pool.query('INSERT INTO requests(user_id, description, status, date_of_request, class) VALUES ('+user_id+', "'+sub_description+'", 1, "'+formattedDate+'", '+sub_room_number+');', function(err, result){
+                let result = await login(pool, sub_username, sub_password);
+                if (result.status == 1 && result.id != null) {
+                    pool.query('INSERT INTO requests(user_id, description, status, date_of_request, class) VALUES ('+result.id+', "'+sub_description+'", 1, "'+formattedDate+'", '+sub_room_number+');', function(err, result){
                         console.log(err);
-                        console.log(result);
                         if (err) {
-                            status = 2
+                            result.status = 2
                         }
                     });
                 }
                 pool.end();
-                return NextResponse.json({"status": status}, {status: 200});
+                return NextResponse.json({"status": result.status}, {status: 200});
                 break;
             default:
                 return NextResponse.json({ message: 'Method not allowed' }, {status: 405});

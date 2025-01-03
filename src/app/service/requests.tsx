@@ -60,7 +60,7 @@ export default function Requests() {
         setMode(mode);
     };
 
-    const [data, setData] = useState(null)
+    const [data, setData] = useState<any[]>([])
 
     const [isLoading, setLoading] = useState(true)
 
@@ -91,7 +91,7 @@ export default function Requests() {
 
     if (isLoading) return <p>Loading...</p>
     if (!data) return <p>No data fetched</p>
-    if (mode == 1) {
+    if (mode == 1 && data) {
         return (
             <div>
                 {data.map(item =>
@@ -99,19 +99,19 @@ export default function Requests() {
                 )}
             </div>
         )
-    } else if (mode == 2) {
+    } else if (mode == 2 && data) {
         async function changeState(req_status: number) {
             let username = getCookie("username");
             let password = getCookie("password");
             const response = await fetch('/api/change_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username, password: password, set_status: req_status, request_id: data[id].id}),
+                body: JSON.stringify({ username: username, password: password, set_status: req_status, request_id: data![id].id}),
             }).then(response => {
                 return response.json();
             })
             if (response != null) {
-                if (response.status == 1) {
+                if (response.status == 1 && data) {
                     let data_temp = data
                     data_temp[id].status = req_status
                     setData(data_temp)

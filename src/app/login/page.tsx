@@ -4,39 +4,40 @@ import Link from 'next/link'
 import Field from '../componets/form/field'
 import Back from '../componets/form/back'
 import { FormEvent } from 'react'
-async function login(event: FormEvent<HTMLFormElement>){
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    let username = formData.get("username");
-    let password = formData.get("password");
-    const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password: password }),
-    }).then(response => {
-        return response.json();
-    })
-    if (response != null) {
-        if (response.status == 1) {
-            document.cookie = `username=${response.username}`;
-            document.cookie = `password=${response.password}`;
-            document.cookie = `id=${response.id}`;
-            document.cookie = `user_type=${response.user_type}`;
-            let location: string = "/login/error";
-            if (response.user_type == 1){
-                location = '/teacher';
-            } else if(response.user_type == 2){
-                location ='/service';
-            } else if(response.user_type == 3){
-                location = '/admin-panel';
-            }
-            window.location.href = location;
-        } else if(response.status == 2){
-            window.location.href = '/login/error';
-        };
-    }
-};
+import { setCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
 export default function Login_menu(){
+    const router = useRouter()
+    async function login(event: FormEvent<HTMLFormElement>){
+        event.preventDefault()
+        const formData = await new FormData(event.currentTarget)
+        let username = formData.get("username");
+        let password = formData.get("password");
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({username: username, password: password }),
+        }).then(response => {
+            return response.json();
+        })
+        if (response != null) {
+            if (response.status == 1) {
+                setCookie("username", response.username);
+                setCookie("password", response.password);
+                setCookie("id", response.id);
+                setCookie("user_type", response.user_type);
+                if (response.user_type == 1){
+                    router.push('/teacher');
+                } else if(response.user_type == 2){
+                    router.push('/service');
+                } else if(response.user_type == 3){
+                    router.push('/admin-panel');
+                }
+            } else if(response.status == 2){
+                router.push('/login/error');
+            };
+        }
+    };
     return(
         <div className="w-screen h-screen flex items-center justify-center">
             <div className="bg-black border border-white p-10 ">
@@ -49,7 +50,7 @@ export default function Login_menu(){
                         <Link href="/login/password-recovery" className="text-blue-500">Zapomniałeś hasła?</Link>
                     </div>
                     <div className="flex items-center justify-between">
-                        <input className="bg-black p-3 border border-white w-full button" type="submit" value={'Zaloguj się'}/>
+                        <input className="bg-black p-3 border border-white w-full button cursor-pointer" type="submit" value={'Zaloguj się'}/>
                     </div>
                 </form>
             </div>

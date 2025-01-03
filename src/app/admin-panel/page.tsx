@@ -5,6 +5,7 @@ import Panel from "./panel"
 import React, { useState } from 'react';
 import Validator from "../componets/scripts/validator";
 import Logoff from "../componets/scripts/logoff"
+import { useRouter } from 'next/navigation'
 const panelModes = {
     REQUESTS: 1,
     USERS: 2,
@@ -12,12 +13,13 @@ const panelModes = {
     DEFAULT: 4,
 };
 export default function Admin_panel(){
+    const router = useRouter()
     const [panelMode, setPanelMode] = useState(panelModes.DEFAULT);
     const handleButtonClick = (mode: any) => {
       setPanelMode(mode);
     };
     if (!Validator("3")){
-        window.location.href = "/login";
+        router.push("/login");
         return null;  // Return null if user is not logged in. 
     }else{
         return (

@@ -1,18 +1,20 @@
 import dbconn from '@/app/componets/scripts/dbconn';
+import login from '@/app/componets/scripts/login';
 import mysql from 'mysql'
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
-let response: string = "", status:number = 1;
+let response: string = "";
 
 function Request_item(description: any,id: any,state: any, date: any, user: any, class_number: any){
+    let status_local = "";
     if(state == 1){
-        let status = "<div class='rounded-full bg-red-600 p-3'>Zgłoszone</div>";
+        status_local = "<div class='rounded-full bg-red-600 p-3'>Zgłoszone</div>";
     } else if(state == 2){
-        let status = "<div class='rounded-full bg-yellow-600 p-3'>W realizacji</div>";
+        status_local = "<div class='rounded-full bg-yellow-600 p-3'>W realizacji</div>";
     } else if(state == 3){
-        let status = "<div class='rounded-full bg-green-600 p-3 '>Zrealizowane</div>";
+        status_local = "<div class='rounded-full bg-green-600 p-3 '>Zrealizowane</div>";
     } else {
-        let status = "<div class='rounded-full bg-blue-800 p-3'>ERROR: Status of nr "+state+" has no coresponding value</div>";
+        status_local = "<div class='rounded-full bg-blue-800 p-3'>ERROR: Status of nr "+state+" has no coresponding value</div>";
     }
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
@@ -45,7 +47,7 @@ function Request_item(description: any,id: any,state: any, date: any, user: any,
             </div>\
             <div class="mt-3">\
                 <b>Status:</b> \
-                '+status+'\
+                '+status_local+'\
             </div>\
         </div>'
     )
@@ -60,15 +62,9 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     try {
         switch (req.method) {
             case 'POST':
-                pool.connect();
-                pool.query('SELECT * FROM users WHERE username = "'+sub_username+'" AND password = "'+sub_password+'";', function (err, results) {
-                    if (results[0].id != undefined) {
-                        status = 1
-                    } else {
-                        status = 2
-                    }
-                });
-                if (status == 1){
+                let result = await login(sub_username, sub_password);
+                if (result.status == 1){
+                    pool.connect();
                     pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, requests.class, users.username FROM requests JOIN users ON requests.user_id = users.id WHERE user_id='+sub_id+' ORDER BY requests.status;', function (err, results){
                         let i = 0;
                         response = ""
@@ -77,8 +73,8 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                             i += 1;
                         }
                     });
+                    pool.end();
                 }
-                pool.end();
                 return NextResponse.json({
                     response,
                     }, {status: 200});
