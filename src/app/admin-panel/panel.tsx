@@ -2,29 +2,30 @@ import Requests from "./requests"
 import Users from "./users"
 import UserDataPanel from "@/app/componets/ui_elements/user_data"
 export default function Panel(props: {options: any}){
-        if (props.options == 1){
+    switch (props.options){
+        case 1:
             return (
                 <Requests />
             )
-        } else if (props.options == 2) {
+        case 2:
             return (
                 <Users />
             )
-        } else if (props.options == 3) {
+        case 3:
             return (
                 <UserDataPanel />
             )
-        } else if (props.options == 4) {
+        case 4:
             return (
                 <div className="w-full h-full flex justify-center items-center">
                     <p className="text-center text-2xl text-white">Witaj w panelu administratora</p>
                 </div>
             )
-        } else {
+        default:
             return (
                 <div className="bg-red-500 text-black absolute m-auto p-10 border border-white">
                     Error: No panel module of ID: {props.options}
                 </div>
             )
-        }
+    }
 }

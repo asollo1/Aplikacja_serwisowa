@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation'
 const panelModes = {
     REQUESTS: 1,
     REPORT: 2,
-    DEFAULT: 3,
-    USER_DATA: 4
+    USER_DATA: 3,
+    DEFAULT: 4
 };
 export default function Admin_panel(){
     const router = useRouter()
