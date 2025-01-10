@@ -1,5 +1,5 @@
 import dbconn from "./dbconn";
-let id: number = 0, status: number = 0, user_type: number = 0;
+let id: number = 0, status: number = 0, user_type: number = 0, email: string = "";
 export default async function login(username: string, password: string, user_type_req?: number){
     const pool = dbconn()
     pool.connect();
@@ -11,12 +11,14 @@ export default async function login(username: string, password: string, user_typ
                 username = user.username; 
                 password = user.password; 
                 user_type = user.user_type;
+                email = user.email;
                 status = 1
             } else {
                 id = 0
                 username = ""
                 password = ""
                 user_type = 0
+                email = ""
                 status = 2
             }
         });
@@ -28,16 +30,18 @@ export default async function login(username: string, password: string, user_typ
                 username = user.username; 
                 password = user.password; 
                 user_type = user.user_type;
+                email = user.email;
                 status = 1
             } else {
                 id = 0
                 username = ""
                 password = ""
                 user_type = 0
+                email = ""
                 status = 2
             }
         });
     }
     pool.end();
-    return {id, user_type, username, password, status}
+    return {id, user_type, username, password, status, email}
 }

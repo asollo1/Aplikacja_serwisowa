@@ -6,6 +6,7 @@ import Back from '../componets/form/back'
 import { FormEvent } from 'react'
 import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 export default function Login_menu(){
     const router = useRouter()
     async function login(event: FormEvent<HTMLFormElement>){
@@ -26,6 +27,7 @@ export default function Login_menu(){
                 setCookie("password", response.password);
                 setCookie("id", response.id);
                 setCookie("user_type", response.user_type);
+                setCookie("email", response.email);
                 if (response.user_type == 1){
                     router.push('/teacher');
                 } else if(response.user_type == 2){

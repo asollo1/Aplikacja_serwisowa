@@ -8,7 +8,8 @@ import Validators from '../componets/scripts/validator'
 const panelModes = {
     REQUESTS: 1,
     REPORT: 2,
-    DEFAULT: 3
+    USER_DATA: 3,
+    DEFAULT: 4
 };
 export default function Admin_panel(){
     const [panelMode, setPanelMode] = useState(panelModes.DEFAULT);
@@ -25,6 +26,7 @@ export default function Admin_panel(){
                     <div className="flex flex-right justify-end md:w-1/2">
                         <Button content="Zapytania serwisowe" onClick={() => handleButtonClick(panelModes.REQUESTS)} />
                         <Button content="Dodaj zapytanie" onClick={() => handleButtonClick(panelModes.REPORT)} />
+                        <Button content="Dane użytkownika" onClick={() => handleButtonClick(panelModes.USER_DATA)} />
                         <Button content="Wyloguj się" onClick={() => Logoff()}/>
                     </div>
                 </div>

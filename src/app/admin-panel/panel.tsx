@@ -1,5 +1,6 @@
 import Requests from "./requests"
 import Users from "./users"
+import UserDataPanel from "@/app/componets/ui_elements/user_data"
 export default function Panel(props: {options: any}){
         if (props.options == 1){
             return (
@@ -9,7 +10,10 @@ export default function Panel(props: {options: any}){
             return (
                 <Users />
             )
-
+        } else if (props.options == 3) {
+            return (
+                <UserDataPanel />
+            )
         } else if (props.options == 4) {
             return (
                 <div className="w-full h-full flex justify-center items-center">

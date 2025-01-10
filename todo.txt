@@ -14,7 +14,7 @@ Login page:
 
 Admin panel:
     X admin panel layout
-    - user administration
+    X user administration
     X service request menagment
     X service request display from server
 
@@ -38,3 +38,4 @@ Whole:
     - push notifications
     X logout button
     X add service request form functionality
+    X Changing self user data

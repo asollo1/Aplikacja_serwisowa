@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation'
 const panelModes = {
     REQUESTS: 1,
     USERS: 2,
-    LOGS: 3,
-    DEFAULT: 4,
+    USER_DATA: 3,
+    DEFAULT: 4
 };
 export default function Admin_panel(){
     const router = useRouter()
@@ -30,6 +30,7 @@ export default function Admin_panel(){
                     <div className="mt-2 mb:mt-10 text-center">
                         <Button content="Requests" onClick={() => handleButtonClick(panelModes.REQUESTS)} />
                         <Button content="Users" onClick={() => handleButtonClick(panelModes.USERS)} />
+                        <Button content="User data" onClick={() => handleButtonClick(panelModes.USER_DATA)} />
                         <Button content="Log off" onClick={() => {Logoff();}}/>
                     </div>
                 </div>

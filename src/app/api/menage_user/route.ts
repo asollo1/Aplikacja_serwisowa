@@ -19,7 +19,6 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                     switch (sub_change_mode) {
                         case 1:
                             pool.query('UPDATE users SET password = "qwerty1234" WHERE id = '+sub_user_id+';', function(err, result){
-                                console.log(err);
                                 if (err) {
                                     status = 2
                                 }
@@ -27,7 +26,6 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                             break;
                         case 2:
                             pool.query('DELETE FROM users WHERE id = '+sub_user_id+';', function(err, result){
-                                console.log(err);
                                 if (err) {
                                     status = 2
                                 }

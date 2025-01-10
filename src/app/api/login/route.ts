@@ -14,6 +14,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                     "username": result.username,
                     "password": result.password,
                     "user_type": result.user_type,
+                    "email": result.email,
                     "status": result.status}, {status: 200});
                 break;
             default:
