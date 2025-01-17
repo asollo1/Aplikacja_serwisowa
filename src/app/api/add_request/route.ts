@@ -18,15 +18,13 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     try {
         switch (req.method) {
             case 'POST':
-                pool.connect();
-                let result = await login(pool, sub_username, sub_password);
+                await pool.getConnection();
+                let result = await login(sub_username, sub_password);
                 if (result.status == 1 && result.id != null) {
-                    pool.query('INSERT INTO requests(user_id, description, status, date_of_request, class) VALUES ('+result.id+', "'+sub_description+'", 1, "'+formattedDate+'", '+sub_room_number+');', function(err, result){
-                        console.log(err);
-                        if (err) {
-                            result.status = 2
-                        }
-                    });
+                    let results = await pool.query('INSERT INTO requests(user_id, description, status, date_of_request, class) VALUES ('+result.id+', "'+sub_description+'", 1, "'+formattedDate+'", '+sub_room_number+');')
+                    if (results.err) {
+                        result.status = 2
+                    }
                 }
                 pool.end();
                 return NextResponse.json({"status": result.status}, {status: 200});

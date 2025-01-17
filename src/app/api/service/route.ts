@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 import login from '@/app/componets/scripts/login';
 import dbconn from '@/app/componets/scripts/dbconn'
-let response: string = "", status:number = 1;
+let response: any;
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
@@ -14,10 +14,8 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
             case 'POST':
                 let result = await login(sub_username, sub_password, 2);
                 if (result.status == 1){
-                    pool.connect();
-                    pool.query('SELECT ROW_NUMBER() OVER (ORDER BY requests.status) AS row_num, requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;', function (err, results){
-                        response = results
-                    });
+                    await pool.getConnection();
+                    response = await pool.query('SELECT ROW_NUMBER() OVER (ORDER BY requests.status) AS row_num, requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;')
                     pool.end();
                 }
                 return NextResponse.json({

@@ -15,25 +15,21 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
             case 'POST':
                 let result = await login(sub_username, sub_password, 3);
                 if (result.status == 1) {
-                    pool.connect();
+                    await pool.getConnection();
+                    let results;
                     switch (sub_change_mode) {
                         case 1:
-                            pool.query('UPDATE users SET password = "qwerty1234" WHERE id = '+sub_user_id+';', function(err, result){
-                                if (err) {
-                                    status = 2
-                                }
-                            });
+                            results = await pool.query('UPDATE users SET password = "qwerty1234" WHERE id = '+sub_user_id+';')
                             break;
                         case 2:
-                            pool.query('DELETE FROM users WHERE id = '+sub_user_id+';', function(err, result){
-                                if (err) {
-                                    status = 2
-                                }
-                            });
+                            results = await pool.query('DELETE FROM users WHERE id = '+sub_user_id+';')
                             break;
                         default:
                             status = 2;
                             break;
+                    }
+                    if (results!.err) {
+                        status = 2
                     }
                     pool.end();
                 }

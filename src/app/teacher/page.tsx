@@ -1,10 +1,10 @@
 "use client"
-import Title from "../componets/form/title"
-import Button from "../componets/ui_elements/button"
+import Title from "@/app/componets/form/title"
+import Button from "@/app/componets/ui_elements/button"
 import Panel from "./panel"
 import React, { useState } from 'react';
-import Validator from '../componets/scripts/validator'
-import Logoff from "../componets/scripts/logoff";
+import Validator from '@/app/componets/scripts/validator'
+import Logoff from "@/app/componets/scripts/logoff";
 import { useRouter } from 'next/navigation'
 const panelModes = {
     REQUESTS: 1,

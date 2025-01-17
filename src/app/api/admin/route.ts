@@ -2,6 +2,7 @@ import mysql from 'mysql'
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 import dbconn from '@/app/componets/scripts/dbconn'
+import login from '@/app/componets/scripts/login';
 let response: string = "", status:number = 1;
 function Request_item(description: any,id: any,state: any, date: any, user: any, class_number: any){
     if(state == 1){
@@ -53,23 +54,16 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     try {
         switch (req.method) {
             case 'POST':
-                pool.connect();
-                pool.query('SELECT * FROM users WHERE username = "'+sub_username+'" AND password = "'+sub_password+'";', function (err, results) {
-                    if (results[0].id != undefined) {
-                        status = 1
-                    } else {
-                        status = 2
+                await pool.getConnection();
+                let result = await login(sub_username, sub_password);
+                if (result.status == 1){
+                    let results = await pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;')
+                    let i = 0;
+                    response = ""
+                    while(results[i] != undefined){
+                        response += Request_item(results[i].description, results[i].id, results[i].status, results[i].date_of_request, results[i].username, results[i].class)
+                        i += 1;
                     }
-                });
-                if (status == 1){
-                    pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;', function (err, results){
-                        let i = 0;
-                        response = ""
-                        while(results[i] != undefined){
-                            response += Request_item(results[i].description, results[i].id, results[i].status, results[i].date_of_request, results[i].username, results[i].class)
-                            i += 1;
-                        }
-                    });
                 }
                 pool.end();
                 return NextResponse.json({

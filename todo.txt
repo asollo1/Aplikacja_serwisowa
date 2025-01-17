@@ -33,9 +33,11 @@ Teacher view:
     X add service request
     X view status of their past service
     X data pull from service
+    - client side rendering
     
 Whole:
     - push notifications
     X logout button
     X add service request form functionality
     X Changing self user data
+    X Moving from mysql library to mariadb library

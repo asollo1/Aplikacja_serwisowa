@@ -64,15 +64,14 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
             case 'POST':
                 let result = await login(sub_username, sub_password);
                 if (result.status == 1){
-                    pool.connect();
-                    pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, requests.class, users.username FROM requests JOIN users ON requests.user_id = users.id WHERE user_id='+sub_id+' ORDER BY requests.status;', function (err, results){
-                        let i = 0;
-                        response = ""
-                        while(results[i] != undefined){
-                            response += Request_item(results[i].description, results[i].id, results[i].status, results[i].date_of_request, results[i].username, results[i].class)
-                            i += 1;
-                        }
-                    });
+                    await pool.getConnection();
+                    let results = await pool.query('SELECT requests.id, requests.description, requests.date_of_request, requests.status, requests.class, users.username FROM requests JOIN users ON requests.user_id = users.id WHERE user_id='+sub_id+' ORDER BY requests.status;')
+                    response = ""
+                    console.log(results)
+                    for(let i = 0; i < results.length; i++) {
+                        response += Request_item(results[i].description, results[i].id, results[i].status, results[i].date_of_request, results[i].username, results[i].class)
+                        i += 1;
+                    }
                     pool.end();
                 }
                 return NextResponse.json({

@@ -1,5 +1,5 @@
 import Requests from "./requests"
-import Report_form from "../componets/ui_elements/report_form"
+import Report_form from "@/app/componets/ui_elements/report_form"
 import UserDataPanel from "@/app/componets/ui_elements/user_data"
 export default function Panel(props: {options: any}){
     switch (props.options){

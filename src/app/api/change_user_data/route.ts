@@ -15,12 +15,11 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
             case 'POST':
                 let result = await login(sub_username, sub_old_password);
                 if (result.status == 1) {
-                    pool.connect();
-                    pool.query('UPDATE users SET password = "'+sub_password+'", email = "'+sub_email+'" WHERE username = "'+sub_username+'";', function(err, result){
-                        if (err) {
-                            status = 2
-                        }
-                    });
+                    await pool.getConnection();
+                    let results = await pool.query('UPDATE users SET password = "'+sub_password+'", email = "'+sub_email+'" WHERE username = "'+sub_username+'";')
+                    if (results.err) {
+                        status = 2
+                    }
                     pool.end();
                 }
                 return NextResponse.json({
