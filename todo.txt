@@ -33,7 +33,7 @@ Teacher view:
     X add service request
     X view status of their past service
     X data pull from service
-    - client side rendering
+    X client side rendering
     
 Whole:
     - push notifications

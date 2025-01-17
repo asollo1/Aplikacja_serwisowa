@@ -46,9 +46,6 @@ export default function Report_form(props: { back?: boolean; }) {
         })
     }
     const [mode, setmode] = useState(1);
-    const handleButtonClick = (mode: any) => {
-        setmode(mode);
-    };
     if (mode == 1) {
         if (props.back) {
             let back = <Back href="/dashboard"></Back>

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                 let result = await login(sub_username, sub_password, 3);
                 if (result.status == 1){
                     await pool.getConnection();
-                    response = await pool.query('SELECT id, email, username FROM users;')
+                    response = await pool.query('SELECT id, email, username, user_type FROM users;')
                     pool.end();
                 }
                 return NextResponse.json({
