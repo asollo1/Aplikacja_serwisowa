@@ -15,9 +15,8 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                 let result = await login(sub_username, sub_password, 2);
                 if (result.status == 1){
                     await pool.getConnection();
-                    response = await pool.query('SELECT ROW_NUMBER() OVER (ORDER BY requests.status) AS row_num, requests.id, requests.description, CAST(requests.date_of_request AS CHAR) AS date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;')
+                    response = await pool.query('SELECT CAST(ROW_NUMBER() OVER (ORDER BY requests.status) AS CHAR) AS row_num, requests.id, requests.description, CAST(requests.date_of_request AS CHAR) AS date_of_request, requests.status, users.username, requests.class FROM requests JOIN users ON requests.user_id = users.id ORDER BY requests.status;')
                     pool.end();
-                    console.log(response)
                 }
                 return NextResponse.json({
                     response,

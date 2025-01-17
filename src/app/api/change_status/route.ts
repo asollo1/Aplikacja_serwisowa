@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse} from 'next'
 import login from '@/app/componets/scripts/login';
 import { NextResponse, NextRequest } from 'next/server'
 import dbconn from '@/app/componets/scripts/dbconn';
-let status:any;
+let status:any = 1;
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
     let body = await req.json();

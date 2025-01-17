@@ -54,8 +54,6 @@ export default function Users(){
         let username = getCookie("username");
         let password = getCookie("password");
         let formData = new FormData(document.getElementById('add_user_form') as HTMLFormElement);
-        console.log(formData.get('username'));
-        console.log(formData);
         const response = await fetch('/api/add_user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

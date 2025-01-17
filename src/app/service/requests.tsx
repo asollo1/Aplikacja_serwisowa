@@ -1,6 +1,6 @@
 import Button from "@/app/componets/ui_elements/button";
 import "@/app/globals.css"
-import { useEffect, useRef, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import { getCookie } from "cookies-next";
 
 function asciiArrayToString(asciiArray: number[]): string {
@@ -61,8 +61,9 @@ export default function Requests() {
     };
 
     const [data, setData] = useState<any[]>([])
-
     const [isLoading, setLoading] = useState(true)
+
+    const cur_state = useRef<HTMLElement>(null)
 
     function change(id: number) {
         handleIdChange(id);
@@ -99,7 +100,7 @@ export default function Requests() {
                 )}
             </div>
         )
-    } else if (mode == 2 && data) {
+    } else if (mode == 2) {
         async function changeState(req_status: number) {
             let username = getCookie("username");
             let password = getCookie("password");
@@ -111,11 +112,23 @@ export default function Requests() {
                 return response.json();
             })
             if (response != null) {
-                if (response.status == 1 && data) {
-                    let data_temp = data
-                    data_temp[id].status = req_status
-                    setData(data_temp)
-                    setMode(1)
+                if (response.status == 1) {
+                    let status
+                    switch (req_status) {
+                        case 1:
+                            status = "Status: Przyjęte"
+                            break;
+                        case 2:
+                            status = "Status: W realizacji"
+                            break;
+                        case 3:
+                            status = "Status: Zrealizowane"
+                            break;
+                        default:
+                            status = "Status: Nieznany status"
+                            break;
+                    }
+                    cur_state.current!.innerHTML = status;
                 }
             }
         }
@@ -142,7 +155,7 @@ export default function Requests() {
                         <div className="mx-3">Szczegóły zgłoszenia</div>
                         <div className="mx-3">ID: {data[id].id}</div>
                         <div className="mx-3">Sala: {data[id].class}</div>
-                        <div className="mx-3">Status: {status}</div>
+                        <div className="mx-3" ref={cur_state as LegacyRef<HTMLDivElement>}>Status: {status}</div>
                         <div className="mx-3">Data zgłoszenia: {data[id].date_of_request.substring(0, 10)}</div>
                         <Button content={"Powrót"} onClick={() => handleModeChange(1)} />
                     </div>
