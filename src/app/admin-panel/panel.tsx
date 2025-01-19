@@ -1,4 +1,5 @@
-import Requests from "./requests"
+import Report_form from "../componets/ui_elements/report_form"
+import Requests from "@/app/componets/ui_elements/requests"
 import Users from "./users"
 import UserDataPanel from "@/app/componets/ui_elements/user_data"
 export default function Panel(props: {options: any}){
@@ -16,6 +17,10 @@ export default function Panel(props: {options: any}){
                 <UserDataPanel />
             )
         case 4:
+            return (
+                <Report_form />
+            )
+        case 5:
             return (
                 <div className="w-full h-full flex justify-center items-center">
                     <p className="text-center text-2xl text-white">Witaj w panelu administratora</p>

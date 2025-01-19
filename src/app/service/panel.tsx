@@ -1,4 +1,4 @@
-import Requests from "./requests"
+import Requests from "../componets/ui_elements/requests"
 import Report_form from "@/app/componets/ui_elements/report_form"
 import UserDataPanel from "@/app/componets/ui_elements/user_data"
 export default function Panel(props: {options: any}){

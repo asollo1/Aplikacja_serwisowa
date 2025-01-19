@@ -6,7 +6,6 @@ import Back from '../componets/form/back'
 import { FormEvent } from 'react'
 import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 export default function Login_menu(){
     const router = useRouter()
     async function login(event: FormEvent<HTMLFormElement>){

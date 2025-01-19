@@ -21,6 +21,8 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                         status = 2
                     }
                     pool.end();
+                } else {
+                    status = 2;
                 }
                 return NextResponse.json({
                     "password": sub_password,

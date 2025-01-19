@@ -22,6 +22,8 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                     if (results.err) {
                         status = 2
                     }
+                } else {
+                    status = 2;
                 }
                 pool.end();
                 return NextResponse.json({"status": status}, {status: 200});

@@ -12,7 +12,7 @@ export default function Requests(){
         fetch('/api/teacher', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password: password, id: id }),
+            body: JSON.stringify({ username, password: password}),
         }).then(response => {
             return response.json();
         }).then(response => {

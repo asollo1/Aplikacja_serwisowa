@@ -1,0 +1,229 @@
+
+Autor: Hubert Kopania
+Email kontantowy: niutka.gekon@gmail.com
+Nazwa aplikacji: ZSE service app
+
+ “Every relationship is a power struggle. Some of us need to be controlled.”
+— Elliot Alderson, MR Robot
+
+Ogólne funkcje:
+ZSE service app to sytem zbudowany na potrzeby serwisu szkolnego zespołu Szkół Elektronicznych w Bolesławcu
+Zawiera on funkcje takie:
+    - system przyjmowania zgłoszeń
+    - zmiany ich statusu
+    - system zarządzania użytkownikami 
+
+Uruchomienie:
+npm start
+
+Działanie:
+
+/src/app/login/page.tsx:
+Strona główna aplikacji, można z niej przejść do strony logowania
+
+/src/app/login/page.tsx:
+Strona logowania aplikacji przekierowóje w zależności od typu używkonika do paneli:
+    - nauczyciela (/src/app/teacher/page.tsx)
+    - serwisanta (/src/app/service/page.tsx)
+    - administratora (/src/app/admin_panel/page.tsx)    
+
+Każdemu typowi użytkownika odpowiada id:
+    - 1 - nauczyciel
+    - 2 - serwisant
+    - 3 - administrator
+
+W kolejności rosnącej każdy użytkownik wyżej ma wyższe uprawnienia
+Uprawnienia poszczególnych typów użytkownika:
+    - 1:
+        - podgląd swoich zapytań serwisowych
+        - zmiana swoich danych użytkownika
+    - 2:
+        - podgląd wszystkich zapytań serwisowych
+        - zmiana stanu zapytań serwisowych
+        - dodawanie i odczytywanie notatek serwisowych
+        - generowanie raportów ze zrealizowanych zapytań serwisowych
+        - dodawanie zapytań serwisowych
+        - zmiana swoich danych użytkownika
+    - 3:
+        - podgląd wszystkich zapytań serwisowych
+        - zmiana stanu zapytań serwisowych
+        - dodawanie i odczytywanie notatek serwisowych
+        - generowanie raportów ze zrealizowanych zapytań serwisowych
+        - dodawanie zapytań serwisowych
+        - reset hasła użytkownika
+        - usunięcie użytkownika 
+        - dodanie użytkownika
+/src/app/login/error/page.tsx
+    Strona wyświetlana po wprowadzeniu błędnego hasła
+
+/src/app/login/password-recovery/page.tsx
+    Strona służąca do zmiany hasła
+
+/src/app/teacher/
+    page.tsx:
+        Panel użytkownika o najniżsych uprawnieniach
+    panel.tsx:
+        Warstwa pomiędzy page.tsx a komponentami na niej wyświtlanymi
+        Kompnenty używane przez panel.tsx:
+            /src/app/teacher/requests.tsx
+            /src/app/comomponents/ui_elements/user_data.tsx
+            /src/app/comomponents/ui_elements/report_form.tsx
+    requests.tsx:
+        Zawiera zapytania podgląd złożonyc zapytań serwisowych
+
+/src/app/service/
+    page.tsx:
+        Panel użytkownika o średnich uprawnieniach
+    panel.tsx:
+        Warstwa pomiędzy page.tsx a komponentami na niej wyświtlanymi
+        Kompnenty używane przez panel.tsx:
+            /src/app/comomponents/requests.tsx
+            /src/app/comomponents/ui_elements/user_data.tsx
+            /src/app/comomponents/ui_elements/report_form.tsx
+
+/src/app/admin-panel/
+    page.tsx:
+        Panel użytkownika o najwyższych uprawnianiach
+    panel.tsx:
+        Warstwa pomiędzy page.tsx a komponentami na niej wyświtlanymi
+        Kompnenty używane przez panel.tsx:
+            /src/app/comomponents/requests.tsx
+            /src/app/comomponents/ui_elements/user_data.tsx
+            /src/app/comomponents/ui_elements/report_form.tsx
+            /src/app/admin-panel/users.tsx
+    users.tsx:
+        Umożliwia tworzenie, usuwanie użytkowników oraz reset hasła użytkowników
+
+/src/app/comomponents/
+    /form/
+        back.tsx:
+            Strzałka służąca do cofania się
+            Atrybuty:
+                href: string - strona na jaką ma kierować strałka
+        field.tsx:
+            Pole formularza
+            Atrybuty:
+                label: any - Nazwa pola formularza
+                id: string - ID oraz name pola formularza
+                type: string - typ pola formularza
+                readonly?: boolean - (nie obowiązkowe) czy pole ma być tylko do wprowadzania
+                value?: string - (nie obowiązkowe) domyślna wartość pola
+        title.tsx:
+            Tytuł formularza
+            Atrybuty
+                label: string - Tytuł formularza do wyświtlenia
+                
+    /scripts/
+        dbconn.ts:
+            Skrypt łączenia z bazą danych
+            Zawiera funkcje dbconn();
+            W nim możemy konfigurować dane dostępowe do bazy danych takie jak:
+                - adres serwera baz danych
+                - nazwa użytkownika bazy danych
+                - hasło do użytkownika bazy danych
+                - nazwe bazy danych
+        login.ts:
+            Skrypt logowania użytkownika
+            Zawiera funkcje login która jako atrybuty przyjmuje:
+                username: string - nazwa użytkownika
+                password: string - hasło użytkownika
+                user_type_req?: number - (nie obowiązkowe) - wysokość uprawnień potrzebnych do uzyskania dostępu do zawartości
+        logoff.ts:
+            Skrypt wylogowywania
+            Zawiera funkcje Logoff()
+            Usuwa pliki cookies służące do autoryzacji
+        validator.ts:
+            Sprawdza czy konto użytkownika które jest aktualnie zalogowane ma odpowiednie uprawnienia aby wyświetlić dany panel
+            Zawiera funcke Validator() która jako atrybuty przyjmuje:
+                user_type: string - typ użytkownika porzebny do wyświetlenia danego panelu
+    
+    /ui_elements/
+        button.tsx:
+            Przycisk używany na przestrzeni aplikacji
+            Atrybuty:
+                content: any - tekst który ma znaleźć się na przycisku
+                onClick?: any - (nie obowiązkowe) funkcja która ma być wywołana przez przycisk po naciśnięciu
+        navbar.tsx:
+            Zawiera element paska
+            content: any - Zawartośc elementu paska zadań
+            align: string - pozycjonowanie elementu zawartych w elemencie:
+                left - elementy będą po lewej
+                right - elementy będą po prawej
+                center - elementy będą na środku
+                Wprowadzenie czegokolwiek innego skutkuje domyślnego pozycjonowania elementów
+        report_form.tsx:
+            Formularz służący do wporwadzania zapytań serwisowych
+        requests.tsx:
+            Wyświetla zapytania serwisowe, umożliwia zmianę statusu zapyań serwisowych oraz dodanie notaki serwisowej
+            Minimalny poziom uprawnień: 2
+        user_data.tsx:
+            Formularz służący do zmiany danych użytkownika
+
+/src/app/api/
+    Wszystkie pliki w tym folderze są odpowiedzalne za przetwarzanie zapytan api
+
+    /add_request/route.ts
+        Obsługiwanie dodawanie zapytań serwisowych
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+            description - opis zapytania
+            room_number - numer sali której dotyczy zapytanie
+    
+    /add_user/route.ts
+        Obsługuje dodawanie użytkownika
+        Minimalny poziom uprawnień 3
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+            username_to_add - nazwa użytkownika do dodania
+            password_to_add - hasło użytkownika do dodania
+            email_to_add - email użytkownika do dodania
+            user_type_to_add - typ dodawanego użytkownika
+    
+    /admin_users/route.ts
+        Obsługuje wyświetlanie użytkowników w admin-panelu
+        Minimalny poziom uprawnień 3
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+
+    /change_status/route.ts
+        Obsługuje zmianę statusu zpaytania serwisowego
+        Minimalny poziom uprawnień 2
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+            request_id - id zapytania którego status mamy zmienić
+            set_status - status który ma zostąc nadany zapytaniu
+    
+    /change_user_data/route.ts
+        Obsługuje zmianę danych użytkownika na samym sobie
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+            email - email jaki ma zostać nadany użytkownikowi
+            old_password - stare hasło użytkownika
+    
+    /login/route.ts
+        Obsługuje logowanie użytkownika
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+    
+    /menage_user/route.ts
+        Obsługuje zmianę danych używkonika przez administratora
+        Minimalny poziom uprawnień 3
+        Body:
+            username - nazwa użytkownika
+            password - hasło
+            user_id - id użytkownika na którym dokonywane są zmiany
+            change_mode - typ zmiany wykonywany na użytkowniku
+                1: Reset hasła na domyślne "qwerty1234"
+                2: Usunięcie użytkownika
+    
+    /teacher/route.ts
+        Obsługuje wyświetlanie zapytań serwisowych użytkownika
+        Body:
+            username - nazwa użytkownika
+            password - hasło

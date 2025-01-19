@@ -10,7 +10,8 @@ const panelModes = {
     REQUESTS: 1,
     USERS: 2,
     USER_DATA: 3,
-    DEFAULT: 4
+    REPORT_FORM: 4,
+    DEFAULT: 5
 };
 export default function Admin_panel(){
     const router = useRouter()
@@ -28,10 +29,11 @@ export default function Admin_panel(){
                 <div className="md:h-full w-full md:w-1/5 border-b-2 md:border-b-0 md:border-r-2 border-white p-4 md:p-10 fixed bg-black md:bg-transparent md:flex md:flex-col md:items-center md:justify-center">
                     <div className="text-center md:text-left"><Title label="Admin panel"></Title></div>
                     <div className="mt-2 mb:mt-10 text-center">
-                        <Button content="Requests" onClick={() => handleButtonClick(panelModes.REQUESTS)} />
-                        <Button content="Users" onClick={() => handleButtonClick(panelModes.USERS)} />
-                        <Button content="User data" onClick={() => handleButtonClick(panelModes.USER_DATA)} />
-                        <Button content="Log off" onClick={() => {Logoff();}}/>
+                        <Button content="Zapytania serwisowe" onClick={() => handleButtonClick(panelModes.REQUESTS)} />
+                        <Button content="Użytkownicy" onClick={() => handleButtonClick(panelModes.USERS)} />
+                        <Button content="Dane użytkownika" onClick={() => handleButtonClick(panelModes.USER_DATA)} />
+                        <Button content="Formularz zgłoszeniowy" onClick={() => handleButtonClick(panelModes.REPORT_FORM)} />
+                        <Button content="Wyloguj się" onClick={() => {Logoff();}}/>
                     </div>
                 </div>
                 <div className="h-full md:w-4/5 p-10 flex flex-col mt-24 md:mt-0">
