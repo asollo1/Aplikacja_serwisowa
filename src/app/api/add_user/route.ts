@@ -18,8 +18,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                 await pool.getConnection();
                 let result = await login(sub_username, sub_password, 3);
                 if (result.status == 1) {
-                    let results = await pool.query('INSERT INTO users(username, password, email, user_type) VALUES ("'+sub_username_to_add+'","'+sub_password_to_add+'","'+sub_email_to_add+'", '+sub_user_type+');');
-                    if (results.err) {
+                    if ((await pool.query(`INSERT INTO users(username, password, email, user_type) VALUES ("${sub_username_to_add}","${sub_password_to_add}","${sub_email_to_add}", ${sub_user_type});`)).err) {
                         status = 2
                     }
                 } else {

@@ -19,10 +19,10 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                     let results;
                     switch (sub_change_mode) {
                         case 1:
-                            results = await pool.query('UPDATE users SET password = "qwerty1234" WHERE id = '+sub_user_id+';')
+                            results = await pool.query(`UPDATE users SET password = "qwerty1234" WHERE id = ${sub_user_id};`)
                             break;
                         case 2:
-                            results = await pool.query('DELETE FROM users WHERE id = '+sub_user_id+';')
+                            results = await pool.query(`DELETE FROM users WHERE id = ${sub_user_id};`)
                             break;
                         default:
                             status = 2;

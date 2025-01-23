@@ -7,6 +7,8 @@ function asciiArrayToString(asciiArray: number[]): string {
     return asciiArray.map(num => String.fromCharCode(num)).join('');
 }
 
+let notes: any[] = [];
+
 function Request_item(props: { description: any, id: any, state: any, date: any, user: any, onClick: any }) {
     let status
     if (props.state == 1) {
@@ -49,6 +51,35 @@ function Request_item(props: { description: any, id: any, state: any, date: any,
     )
 }
 
+function Note(props: {note: any, date: string, author: string}){
+    return (
+        <div className="border border-white p-5 m-5">
+            <div className="flex flex-col md:flex-row w-full md:text-xl md:mt-3 pb-2 border-b-2">
+                <div className="md:w-1/3 my-1 md:my-0">
+                    <b>Data: </b><br></br>
+                    {props.date}
+                </div>
+                <div className="md:w-1/3 my-1 md:my-0">
+                    <b>Autor: </b><br></br>
+                    {props.author}
+                </div>
+            </div>
+            <div className="mt-3">
+                <b>Notatka:</b><br></br>
+                {asciiArrayToString(props.note.data)}
+            </div>
+        </div>
+    )
+}
+
+function filterNotes(note: any, req_id: number) {
+    if (note.req_id == req_id){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export default function Requests() {
     const [id, setId] = useState(0)
     const handleIdChange = (id: any) => {
@@ -70,24 +101,50 @@ export default function Requests() {
         handleModeChange(2);
     }
 
-    const status_reference = useRef(null);
+    async function sendNote(id: number){
+        let username = getCookie("username");
+        let password = getCookie("password");
+        let note = service_note.current!.value;
+        let response = await fetch('/api/add_note', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password: password, note: note, service_request_id: id}),
+        }).then(response => {
+            return response.json();
+        })
+        if(response.status == 1){
+            service_note.current!.value = "";
+        }
+    }
+
+    const service_note = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         let username = getCookie("username");
         let password = getCookie("password");
-        let response = fetch('/api/service', {
+        fetch('/api/service', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password: password }),
         }).then(response => {
             return response.json();
         }).then(response => {
-            return response.response
+            return response.response;
         }).then(response => {
             setData(response);
-            setLoading(false)
+            setLoading(false);
         })
-
+        fetch('/api/service_notes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: getCookie("username"), password: getCookie("password") }),
+        }).then(response => {
+            return response.json();
+        }).then(response => {
+            return response.response
+        }).then(response => {
+            notes = response
+        })
     }, [])
 
     if (isLoading) return <p>Loading...</p>
@@ -149,7 +206,7 @@ export default function Requests() {
                 break;
         }
         return (
-            <div className="h-full w-full flex items-center justify-center">
+            <div className="h-full w-full flex justify-center">
                 <div>
                     <div className="flex w-full md:flex-row justify-between text-center md:text-left items-center border border-white p-3">
                         <div className="mx-3">Szczegóły zgłoszenia</div>
@@ -164,10 +221,13 @@ export default function Requests() {
                         {asciiArrayToString(data[id].description.data)}
                     </div>
                     <div className="border border-white p-3">
-                        <p className="text-xl">Notaka serwisu:</p>
-                        <textarea rows={6} className="w-full bg-black mb-3 border border-white p-3">
+                        <p className="text-xl">Notaki serwisu:</p>
+                        <div>
+                            {(notes.filter(item => filterNotes(item, data[id]!.id))).map(item => <Note date={item.date} author={item.author} note={item.note} />)}
+                        </div>
+                        <textarea rows={6} className="w-full bg-black mb-3 border border-white p-3" ref={service_note as LegacyRef<HTMLTextAreaElement>}>
                         </textarea>
-                        <Button content={"Zapisz"} />
+                        <Button content={"Zapisz"} onClick={() => sendNote(data![id].id)}/>
                     </div>
                     <div className="flex w-full md:flex-row justify-evenly text-center md:text-left items-center border border-white p-3">
                         <div className="flex md:flex-row border border-white items-center justify-between p-2">

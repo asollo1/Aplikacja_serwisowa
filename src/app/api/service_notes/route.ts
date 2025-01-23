@@ -1,35 +1,26 @@
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
-import dbconn from '@/app/componets/scripts/dbconn';
 import login from '@/app/componets/scripts/login';
-let status:any = 1;
+import dbconn from '@/app/componets/scripts/dbconn'
+let response: any;
+
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
     let body = await req.json();
     let sub_username = body.username
     let sub_password = body.password
-    let sub_email = body.email
-    var sub_old_password = body.old_password
     try {
         switch (req.method) {
             case 'POST':
-                let result = await login(sub_username, sub_old_password);
-                if (result.status == 1) {
+                let result = await login(sub_username, sub_password, 2);
+                if (result.status == 1){
                     await pool.getConnection();
-                    let results = await pool.query(`UPDATE users SET password = ${sub_password}, email = ${sub_email} WHERE username = ${sub_username};`)
-                    if (results.err) {
-                        status = 2
-                    }
+                    response = await pool.query('SELECT notes.id, notes.note, users.username as author, notes.req_id, notes.date FROM notes INNER JOIN users ON notes.user_id = users.id;')
                     pool.end();
-                } else {
-                    status = 2;
                 }
                 return NextResponse.json({
-                    "password": sub_password,
-                    "username": sub_username,
-                    "email": sub_email,
-                    "status": status
-                }, {status: 200});
+                    response,
+                    }, {status: 200});
                 break;
             default:
                 return NextResponse.json({ message: 'Method not allowed' }, {status: 405});

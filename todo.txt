@@ -23,9 +23,9 @@ Service view:
     X add notes to service request
     X change service request status
     X add service request
-    - add raports to service requests
+    X add raports to service requests
     X print raport
-    - fix overflowing panels
+    X fix overflowing panels
     - raport generation
     X data pull from service
     
