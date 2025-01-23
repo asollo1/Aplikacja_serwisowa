@@ -61,7 +61,7 @@ export default function Report_form(props: { back?: boolean; }) {
                             Opis
                         </label>
                         <textarea className="border border-white bg-black p-3 min-w-full" id="description" name="description" required rows={4} ref={field as LegacyRef<HTMLTextAreaElement>}/>
-                        <Field label="Nr sali" id='room_number' type='number' />
+                        <Field label="Nr sali" id='room_number' type='number'/>
                         <button type='submit' className="button py-3 px-5 border cursor-pointer border-white">
                             Wyślij
                         </button>
