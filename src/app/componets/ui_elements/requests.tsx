@@ -2,6 +2,7 @@ import Button from "@/app/componets/ui_elements/button";
 import "@/app/globals.css"
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { getCookie } from "cookies-next";
+import printServiceReport from "@/app/componets/scripts/gen_raport";
 
 function asciiArrayToString(asciiArray: number[]): string {
     return asciiArray.map(num => String.fromCharCode(num)).join('');
@@ -64,7 +65,7 @@ function Note(props: {note: any, date: string, author: string}){
                     {props.author}
                 </div>
             </div>
-            <div className="mt-3">
+            <div className="mt-3 text-wrap">
                 <b>Notatka:</b><br></br>
                 {asciiArrayToString(props.note.data)}
             </div>
@@ -208,7 +209,7 @@ export default function Requests() {
         return (
             <div className="h-full w-full flex justify-center">
                 <div>
-                    <div className="flex w-full md:flex-row justify-between text-center md:text-left items-center border border-white p-3">
+                    <div className="flex w-full flex-col md:flex-row justify-between text-center md:text-left items-center border border-white p-3">
                         <div className="mx-3">Szczegóły zgłoszenia</div>
                         <div className="mx-3">ID: {data[id].id}</div>
                         <div className="mx-3">Sala: {data[id].class}</div>
@@ -229,8 +230,8 @@ export default function Requests() {
                         </textarea>
                         <Button content={"Zapisz"} onClick={() => sendNote(data![id].id)}/>
                     </div>
-                    <div className="flex w-full md:flex-row justify-evenly text-center md:text-left items-center border border-white p-3">
-                        <div className="flex md:flex-row border border-white items-center justify-between p-2">
+                    <div className="flex w-full flex-col md:flex-row justify-evenly text-center md:text-left items-center border border-white p-3">
+                        <div className="flex md:flex-row border border-white items-center justify-between p-2 mb-2">
                             <p>Ustaw status:</p>
                             <div className="md:ml-5">
                                 <Button onClick={() => changeState(1)} content={"Przyjęte"} />
@@ -238,7 +239,7 @@ export default function Requests() {
                                 <Button onClick={() => changeState(3)} content={"Zrealizowane"} />
                             </div>
                         </div>
-                        <Button content={"Generuj raport"} />
+                        <Button content={"Generuj raport"} onClick={() => {printServiceReport(data[id].id, data[id].username, asciiArrayToString(data[id].description.data), data[id].date_of_request.substring(0, 10), data[id].class, notes.filter(item => filterNotes(item, data[id].id)))}}/>
                     </div>
                 </div>
             </div>

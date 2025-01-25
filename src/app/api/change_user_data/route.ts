@@ -16,7 +16,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                 let result = await login(sub_username, sub_old_password);
                 if (result.status == 1) {
                     await pool.getConnection();
-                    let results = await pool.query(`UPDATE users SET password = ${sub_password}, email = ${sub_email} WHERE username = ${sub_username};`)
+                    let results = await pool.query(`UPDATE users SET password = "${sub_password}", email = "${sub_email}" WHERE username = "${sub_username}";`)
                     if (results.err) {
                         status = 2
                     }

@@ -10,13 +10,39 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     let sub_password = body.password
     let sub_request_id = body.request_id
     let sub_request_status = body.set_status
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+    const day = String(today.getDate()).padStart(2,'0');
+    const hour = String(today.getHours()).padStart(2, '0');
+    const minute = String(today.getMinutes()).padStart(2, '0');
+    let cur_date = `${hour}:${minute} ${day}.${month}.${year}`
+    let state;
+    switch(sub_request_status) {
+        case 1:
+            state = "Przyjęte"
+            break;
+        case 2:
+            state = "W realizacji"
+            break;
+        case 3:
+            state = "Zrealizowane"
+            break;
+        default:
+            state = "Błędny status"
+    }
     try {
         switch (req.method) {
             case 'POST':
                 let result = await login(sub_username, sub_password, 2);
                 if (result.status == 1) {
                     await pool.getConnection();
-                    let results = await pool.query(`UPDATE requests SET status = ${sub_request_status} WHERE id = ${sub_request_id};`)
+                    let results = await pool.query(
+                        `
+                        UPDATE requests SET status = ${sub_request_status} WHERE id = ${sub_request_id}; 
+                        `
+                    )
+                    await pool.query(`INSERT INTO notes(note, user_id, req_id, date) VALUES ("Zmiana statusu na: ${state}", ${result.id}, ${sub_request_id}, "${cur_date}");`)
                     if (results.err) {
                         status = 2
                     }

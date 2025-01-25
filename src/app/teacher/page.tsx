@@ -21,7 +21,7 @@ export default function Admin_panel(){
     if(Validator("1")){
         return (
             <div className="flex flex-row h-screen w-screen">
-                <div className="w-full border-b-2 border-white p-4 md:p-5 fixed bg-black flex flex-row items-center justify-center">
+                <div className="w-full border-b-2 border-white p-4 md:p-5 fixed bg-black flex flex-col md:flex-row items-center justify-center">
                     <div className="text-center md:text-left md:w-1/2 mr-2">
                         <Title label="Panel nauczyciela"></Title>
                     </div>

@@ -26,7 +26,7 @@ Service view:
     X add raports to service requests
     X print raport
     X fix overflowing panels
-    - raport generation
+    X raport generation
     X data pull from service
     
 Teacher view:
