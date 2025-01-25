@@ -51,7 +51,7 @@ export default function Login_menu(){
                         <Link href="/login/password-recovery" className="text-blue-500">Zapomniałeś hasła?</Link>
                     </div>
                     <div className="flex items-center justify-between">
-                        <input className="bg-black p-3 border border-white w-full button" type="submit" value={'Zaloguj się'}/>
+                        <input className="bg-white dark:bg-black p-3 border border-black dark:border-white w-full button" type="submit" value={'Zaloguj się'}/>
                     </div>
                 </form>
             </div>

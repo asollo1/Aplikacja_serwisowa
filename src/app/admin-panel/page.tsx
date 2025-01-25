@@ -29,11 +29,11 @@ export default function Admin_panel() {
     } else {
         return (
             <div className="flex flex-row h-screen w-screen">
-                <div className="w-full border-b-2 border-white p-4 md:p-5 fixed bg-black flex flex-col md:flex-row items-center justify-center">
+                <div className="w-full border-b-2 border-black dark:border-white p-4 md:p-5 fixed bg-white dark:bg-black flex flex-col md:flex-row items-center justify-center">
                     <div className="text-center md:text-left md:w-1/2 mr-2">
                         <Title label="Panel administratora"></Title>
                     </div>
-                    <div className="hidden md:flex flex-col md:flex-right justify-center md:justify-end md:w-1/2" ref={buttons as LegacyRef<HTMLDivElement>}>
+                    <div className="hidden md:flex flex-col md:flex-row md:flex-right justify-center md:justify-end md:w-1/2" ref={buttons as LegacyRef<HTMLDivElement>}>
                         <Button content="Zapytania serwisowe" onClick={() => handleButtonClick(panelModes.REQUESTS)} />
                         <Button content="Użytkownicy" onClick={() => handleButtonClick(panelModes.USERS)} />
                         <Button content="Dane użytkownika" onClick={() => handleButtonClick(panelModes.USER_DATA)} />

@@ -41,14 +41,14 @@ export default function UserDataPanel(){
     };
     return (
         <div className="w-full h-full flex justify-center items-center">
-                <div className="border border-white p-5">
+                <div className="border border-black dark:border-white p-5">
                     <Title label="Dane użytkownika"></Title>
                     <p className="text-sm md:text-base max-w-fit mb-1 p-2 min-w-full text-center border hidden" ref={confirm_box as LegacyRef<HTMLInputElement>}></p>
                     <form className="flex flex-col gap-4" onSubmit={send}>
                         <Field label="Nazwa użytkownika" id='username' type='text' readonly={true} value={getCookie("username")}/>
                         <Field label="Email" id='form_email' type='email' value={getCookie("email")}/>
                         <Field label="Hasło" id='form_password' type='text' value={getCookie("password")}/>
-                        <button type='submit' className="button py-3 px-5 border border-white">
+                        <button type='submit' className="button py-3 px-5 border border-black dark:border-white">
                             Zapisz zmiany
                         </button>
                     </form>

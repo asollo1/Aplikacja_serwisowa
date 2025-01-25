@@ -27,7 +27,7 @@ function Request_item(props: {description: any,id: any,state: any, date: any, us
 
     const formattedDate = `${year}-${month}-${day}`;
     return (
-        <div className="border border-white p-5 m-5">
+        <div className="border border-black dark:border-white p-5 m-5">
             <div className="flex flex-col md:flex-row w-full md:text-xl md:mt-3 pb-2 border-b-2">
                 <div className="md:w-1/4 my-1 md:my-0">
                     <b>ID: </b> 

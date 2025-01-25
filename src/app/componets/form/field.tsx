@@ -5,7 +5,7 @@ export default function Field(props: {label: any; id: string; type: string; read
                 <label className="block font-bold my-2" itemType={props.type}>
                     {props.label}
                 </label>
-                <input className="border border-white bg-black p-3 min-w-full" id={props.id} type={props.type} name={props.id} defaultValue={props.value} required readOnly/>
+                <input className="border border-black dark:border-white bg-white dark:bg-black p-3 min-w-full" id={props.id} type={props.type} name={props.id} defaultValue={props.value} required readOnly/>
             </div>
         )
     } else {
@@ -14,7 +14,7 @@ export default function Field(props: {label: any; id: string; type: string; read
                 <label className="block font-bold my-2" itemType={props.type}>
                     {props.label}
                 </label>
-                <input className="border border-white bg-black p-3 min-w-full" id={props.id} type={props.type} name={props.id} defaultValue={props.value} required/>
+                <input className="border border-black dark:border-white bg-white dark:bg-black p-3 min-w-full" id={props.id} type={props.type} name={props.id} defaultValue={props.value} required/>
             </div>
         )
     }

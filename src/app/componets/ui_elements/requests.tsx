@@ -5,6 +5,9 @@ import { getCookie } from "cookies-next";
 import printServiceReport from "@/app/componets/scripts/gen_raport";
 
 function asciiArrayToString(asciiArray: number[]): string {
+    const bytes = new Uint8Array(asciiArray); // Create a Uint8Array from the hex values
+    const decoder = new TextDecoder('utf-8'); // Create a UTF-8 decoder
+    return decoder.decode(bytes); // Decode the bytes into a string
     return asciiArray.map(num => String.fromCharCode(num)).join('');
 }
 
@@ -22,7 +25,7 @@ function Request_item(props: { description: any, id: any, state: any, date: any,
         status = <div className='rounded-full bg-blue-800 p-3'>ERROR: Status of nr {props.state} has no coresponding value</div>;
     }
     return (
-        <div className="border border-white p-5 m-5">
+        <div className="border border-black dark:border-white p-5 m-5">
             <div className="flex flex-col md:flex-row w-full md:text-xl md:mt-3 pb-2 border-b-2">
                 <div className="md:w-1/3 my-1 md:my-0">
                     <b>ID: </b>
@@ -54,7 +57,7 @@ function Request_item(props: { description: any, id: any, state: any, date: any,
 
 function Note(props: {note: any, date: string, author: string}){
     return (
-        <div className="border border-white p-5 m-5">
+        <div className="border border-black dark:border-white p-5 m-5">
             <div className="flex flex-col md:flex-row w-full md:text-xl md:mt-3 pb-2 border-b-2">
                 <div className="md:w-1/3 my-1 md:my-0">
                     <b>Data: </b><br></br>
@@ -209,7 +212,7 @@ export default function Requests() {
         return (
             <div className="h-full w-full flex justify-center">
                 <div>
-                    <div className="flex w-full flex-col md:flex-row justify-between text-center md:text-left items-center border border-white p-3">
+                    <div className="flex w-full flex-col md:flex-row justify-between text-center md:text-left items-center border border-black dark:border-white p-3">
                         <div className="mx-3">Szczegóły zgłoszenia</div>
                         <div className="mx-3">ID: {data[id].id}</div>
                         <div className="mx-3">Sala: {data[id].class}</div>
@@ -217,21 +220,21 @@ export default function Requests() {
                         <div className="mx-3">Data zgłoszenia: {data[id].date_of_request.substring(0, 10)}</div>
                         <Button content={"Powrót"} onClick={() => handleModeChange(1)} />
                     </div>
-                    <div className="border border-white p-3">
+                    <div className="border border-black dark:border-white p-3">
                         <p className="text-xl">Opis zgłoszenia:</p>
                         {asciiArrayToString(data[id].description.data)}
                     </div>
-                    <div className="border border-white p-3">
+                    <div className="border border-black dark:border-white p-3">
                         <p className="text-xl">Notaki serwisu:</p>
                         <div>
                             {(notes.filter(item => filterNotes(item, data[id]!.id))).map(item => <Note date={item.date} author={item.author} note={item.note} />)}
                         </div>
-                        <textarea rows={6} className="w-full bg-black mb-3 border border-white p-3" ref={service_note as LegacyRef<HTMLTextAreaElement>}>
+                        <textarea rows={6} className="w-full bg-white dark:bg-black mb-3 border border-black dark:border-white p-3" ref={service_note as LegacyRef<HTMLTextAreaElement>}>
                         </textarea>
                         <Button content={"Zapisz"} onClick={() => sendNote(data![id].id)}/>
                     </div>
-                    <div className="flex w-full flex-col md:flex-row justify-evenly text-center md:text-left items-center border border-white p-3">
-                        <div className="flex md:flex-row border border-white items-center justify-between p-2 mb-2">
+                    <div className="flex w-full flex-col md:flex-row justify-evenly text-center md:text-left items-center border border-black dark:border-white p-3">
+                        <div className="flex md:flex-row border border-black dark:border-white items-center justify-between p-2 mb-2">
                             <p>Ustaw status:</p>
                             <div className="md:ml-5">
                                 <Button onClick={() => changeState(1)} content={"Przyjęte"} />

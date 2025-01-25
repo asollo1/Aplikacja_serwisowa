@@ -6,7 +6,7 @@ import Field from "../componets/form/field";
 
 function UserData(props:{id: number, username: string, email: string, user_type: string, remove: Function, reset_password: Function}){
     return(
-        <div className="border border-white p-5 flex flex-col md:flex-row my-5">
+        <div className="border border-black dark:border-white p-5 flex flex-col md:flex-row my-5">
             <div className="flex flex-col md:flex-row items-center justify-end w-full">
                 <p className="md:w-1/4">Id: {props.id}</p>
                 <p className="md:w-1/4">Użytkownik: {props.username}</p>
@@ -129,7 +129,7 @@ export default function Users(){
                     <label className="block font-bold my-2">
                         Typ użytkownika
                     </label>
-                    <select className="border border-white bg-black p-3 min-w-full" name="user_type" id="cars">
+                    <select className="border border-black dark:border-white bg-white dark:bg-black p-3 min-w-full" name="user_type" id="cars">
                       <option value="1">Nauczyciel</option>
                       <option value="2">Serwisant</option>
                       <option value="3">Administrator</option>

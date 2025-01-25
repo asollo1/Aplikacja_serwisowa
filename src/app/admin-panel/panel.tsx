@@ -28,7 +28,7 @@ export default function Panel(props: {options: any}){
             )
         default:
             return (
-                <div className="bg-red-500 text-black absolute m-auto p-10 border border-white">
+                <div className="bg-red-500 text-black absolute m-auto p-10 border border-black dark:border-white">
                     Error: No panel module of ID: {props.options}
                 </div>
             )

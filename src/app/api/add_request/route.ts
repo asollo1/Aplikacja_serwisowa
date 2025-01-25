@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
                 await pool.getConnection();
                 let result = await login(sub_username, sub_password);
                 if (result.status == 1 && result.id != null) {
-                    if ((await pool.query(`INSERT INTO requests(user_id, description, status, date_of_request, class) VALUES ('${result.id}', "${sub_description}", 1, "${formattedDate}", ${sub_room_number});`)).err) {
+                    if ((await pool.query(`INSERT INTO requests(user_id, description, status, date_of_request, class) VALUES ('${result.id}', "${sub_description}", 1, "${formattedDate}", "${sub_room_number}");`)).err) {
                         result.status = 2
                     }
                 }
