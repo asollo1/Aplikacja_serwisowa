@@ -1,10 +1,7 @@
 import { getCookie } from "cookies-next";
 import { useState } from "react";
 import { useEffect } from "react";
-
-function asciiArrayToString(asciiArray: number[]): string {
-    return asciiArray.map(num => String.fromCharCode(num)).join('');
-}
+import asciiArrayToString from "@/app/componets/scripts/ascii_array_to_string";
 
 function Request_item(props: {description: any,id: any,state: any, date: any, user: any, class_number: any}){
     let status_local;

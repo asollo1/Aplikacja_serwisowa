@@ -1,6 +1,6 @@
 import dbconn from '@/app/componets/scripts/dbconn';
+import { inputTypeValidation, sanitizeInput } from '@/app/componets/scripts/input_validation';
 import login from '@/app/componets/scripts/login';
-import mysql from 'mysql'
 import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 let response: string = "";
@@ -8,11 +8,14 @@ let response: string = "";
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn()
     let body = await req.json();
-    let sub_username = body.username
-    let sub_password = body.password
+    let sub_username = sanitizeInput(body.username)
+    let sub_password = sanitizeInput(body.password)
     try {
         switch (req.method) {
             case 'POST':
+                if (inputTypeValidation(["sting", "string"], [sub_username, sub_password])){
+                    return NextResponse.json({ message: 'Error: invalid input types' }, {status: 400});
+                }
                 let result = await login(sub_username, sub_password);
                 if (result.status == 1){
                     await pool.getConnection();

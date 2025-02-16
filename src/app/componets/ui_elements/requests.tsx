@@ -3,14 +3,7 @@ import "@/app/globals.css"
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { getCookie } from "cookies-next";
 import printServiceReport from "@/app/componets/scripts/gen_raport";
-
-function asciiArrayToString(asciiArray: number[]): string {
-    const bytes = new Uint8Array(asciiArray); // Create a Uint8Array from the hex values
-    const decoder = new TextDecoder('utf-8'); // Create a UTF-8 decoder
-    return decoder.decode(bytes); // Decode the bytes into a string
-    return asciiArray.map(num => String.fromCharCode(num)).join('');
-}
-
+import asciiArraytoString from "@/app/componets/scripts/ascii_array_to_string";
 let notes: any[] = [];
 
 function Request_item(props: { description: any, id: any, state: any, date: any, user: any, onClick: any }) {
@@ -42,7 +35,7 @@ function Request_item(props: { description: any, id: any, state: any, date: any,
             </div>
             <div className="mt-3">
                 <b>Opis:</b><br></br>
-                {asciiArrayToString(props.description.data)}
+                {asciiArraytoString(props.description.data)}
             </div>
             <div className="mt-3">
                 <b>Status:</b>
@@ -70,7 +63,7 @@ function Note(props: {note: any, date: string, author: string}){
             </div>
             <div className="mt-3 text-wrap">
                 <b>Notatka:</b><br></br>
-                {asciiArrayToString(props.note.data)}
+                {asciiArraytoString(props.note.data)}
             </div>
         </div>
     )
@@ -222,7 +215,7 @@ export default function Requests() {
                     </div>
                     <div className="border border-black dark:border-white p-3">
                         <p className="text-xl">Opis zgłoszenia:</p>
-                        {asciiArrayToString(data[id].description.data)}
+                        {asciiArraytoString(data[id].description.data)}
                     </div>
                     <div className="border border-black dark:border-white p-3">
                         <p className="text-xl">Notaki serwisu:</p>
@@ -242,7 +235,7 @@ export default function Requests() {
                                 <Button onClick={() => changeState(3)} content={"Zrealizowane"} />
                             </div>
                         </div>
-                        <Button content={"Generuj raport"} onClick={() => {printServiceReport(data[id].id, data[id].username, asciiArrayToString(data[id].description.data), data[id].date_of_request.substring(0, 10), data[id].class, notes.filter(item => filterNotes(item, data[id].id)))}}/>
+                        <Button content={"Generuj raport"} onClick={() => {printServiceReport(data[id].id, data[id].username, asciiArraytoString(data[id].description.data), data[id].date_of_request.substring(0, 10), data[id].class, notes.filter(item => filterNotes(item, data[id].id)))}}/>
                     </div>
                 </div>
             </div>

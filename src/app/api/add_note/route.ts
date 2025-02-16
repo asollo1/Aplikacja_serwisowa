@@ -2,14 +2,15 @@ import { NextApiRequest, NextApiResponse} from 'next'
 import { NextResponse, NextRequest } from 'next/server'
 import dbconn from '@/app/componets/scripts/dbconn';
 import login from '@/app/componets/scripts/login';
+import {sanitizeInput, inputTypeValidation} from '@/app/componets/scripts/input_validation';
 let status:number = 1;
 export async function POST(req: NextRequest, res: NextApiResponse) {
     const pool = dbconn();
     let body = await req.json();
-    let sub_username = body.username
-    let sub_password = body.password
-    let sub_note = body.note
-    let sub_service_request_id = body.service_request_id
+    let sub_username = sanitizeInput(body.username)
+    let sub_password = sanitizeInput(body.password)
+    let sub_note = sanitizeInput(body.note)
+    let sub_service_request_id = sanitizeInput(body.service_request_id)
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
@@ -20,6 +21,9 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     try {
         switch (req.method) {
             case 'POST':
+                if(inputTypeValidation(["string", "string", "string", "number"], [sub_note, sub_password, sub_note, sub_service_request_id])){
+                    return NextResponse.json({ message: 'Error: invalid input types' }, {status: 400});
+                }
                 await pool.getConnection();
                 let result = await login(sub_username, sub_password, 2);
                 if (result.status == 1) {
